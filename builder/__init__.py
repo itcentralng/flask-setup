@@ -86,7 +86,7 @@ def build_package():
     if res == 'y':
         req = ["flask"]
         project = [p for p in sys.argv if p.startswith('--')]
-        project = 'project' if project is None else project[0][2:]
+        project = 'project' if not project else project[0][2:]
         print(f'Building your {project} environment please wait....')
 
         if "-basic" in sys.argv:
