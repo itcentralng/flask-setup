@@ -2,7 +2,7 @@
 Flask Setup Tool
 
 INSTALLATION:
-pip install flask_setup
+pip install flask-setup
 
 USAGE:
 create a virtual environment and activate it
