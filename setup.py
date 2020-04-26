@@ -7,10 +7,10 @@ setuptools.setup(
      scripts=['flask_setup'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",
-     description="A simple flask project starter",
+     description="A simple tool to help you setup a flask project for web development, API development and just any basic app",
      long_description=long_description,
      long_description_content_type="text/markdown",
-     url="https://github.com/mrteey/flask-starter",
+     url="https://github.com/mrteey/flask-setup",
      packages=setuptools.find_packages(),
      classifiers=[
          "Programming Language :: Python :: 3",
