@@ -32,3 +32,11 @@ Flask Setup Tool
 5.  --project_name: you pass a double flag non-spaced 
     name to name your project default is 'project'. e.g.:
     `$ flask_setup --myproject -basic -blueprint`
+
+6.  -g or -generate: pass this alongside -blueprint flag to generate
+    blueprint on existing project. e.g.:
+    `$ flask_setup --myproject g -blueprint myblueprintname`
+
+7.  -d or -destroy: pass this alongside -blueprint flag to remove a
+    blueprint on existing project. e.g.:
+    `$ flask_setup --myproject d -blueprint myblueprintname`
