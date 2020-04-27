@@ -152,7 +152,7 @@ def build_package():
                     build_basic_app(project, with_blueprint, blueprint_name)
 
             elif "-web" in sys.argv:
-                req += ["flask-sqlalchemy", "flask-login", "flask-migrate", "flask-wtf", "arrow"]
+                req += ["flask-sqlalchemy", "flask-login", "flask-migrate", "flask-script", "flask-wtf", "arrow"]
                 if "-blueprint" in sys.argv:
                     with_blueprint = True
                     if "-api" in sys.argv:
