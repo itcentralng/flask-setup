@@ -47,7 +47,7 @@ def page404(e):
     return render_template('404.html')
         """
 
-web_app = """
+standard_app = """
 '''
     app
     --------------
@@ -143,7 +143,7 @@ def page404(e):
     return render_template('404.html')
         """
 
-web_blueprint_app = """
+standard_blueprint_app = """
 '''
     app
     --------------
@@ -293,7 +293,7 @@ def index():
     return render_template('**my_blueprint/index.html')
         """
 
-web_blueprint_setup = """
+standard_blueprint_setup = """
 '''
 MY BLUEPRINT
 --------------
@@ -317,7 +317,7 @@ def teacher_():
     return users_schema.jsonify(users)
         """
 
-web_model = """
+standard_model = """
 '''
 MY MODEL
 --------------
@@ -344,7 +344,7 @@ class User(db.Model, UserMixin):
         return cph(self.password, password)
         """
 
-web_marshmallow = """
+standard_marshmallow = """
 '''
 MY MARSHMALLOW
 --------------
@@ -362,7 +362,7 @@ class UserSchema(ma.ModelSchema):
         model = User
         """
 
-web_methods = """
+standard_methods = """
 '''
 MY METHODS
 --------------
@@ -384,7 +384,7 @@ def returnTrue():
     return True
         """
 
-web_filters = """
+standard_filters = """
 '''
 MY FILTERS
 --------------
