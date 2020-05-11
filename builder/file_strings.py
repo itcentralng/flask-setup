@@ -294,11 +294,11 @@ standard_blueprint_setup = """
 **my_blueprint
 --------------
 '''
-# from flask import Blueprint, request, render_template, redirect, url_for
+from flask import Blueprint, request, render_template, redirect, url_for
 
-# from **project.marshmallow import AuthorSchema
+from **project.marshmallow import AuthorSchema
 
-# from **project.model import *
+from **project.model import *
 
 **my_blueprint = Blueprint('**my_blueprint', __name__, url_prefix='/**my_blueprint')
 
