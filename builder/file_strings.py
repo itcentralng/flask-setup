@@ -54,7 +54,6 @@ standard_app = """
 #Basic Flask Requirements
 from flask import Flask, request, render_template, url_for, redirect, session, flash, Response, make_response, send_file, send_from_directory, make_response
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from flask_sqlalchemy import SQLAlchemy
 
 import os
 
@@ -149,7 +148,6 @@ standard_blueprint_app = """
 #Basic Flask Requirements
 from flask import Flask, request, render_template, url_for, redirect, session, flash, Response, make_response, send_file, send_from_directory, make_response
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from flask_sqlalchemy import SQLAlchemy
 
 import os
 

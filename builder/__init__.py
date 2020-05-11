@@ -139,9 +139,9 @@ def generate_marshmallow(project):
         with open(f"{project}/marshmallow.py", "w") as _app:
             _app.write(standard_marshmallow.replace("**project", project))
 
-        freeze()
-        
         install(req)
+        freeze()
+
     except Exception as e:
         print(e)
 
@@ -149,6 +149,39 @@ def destroy_marshmallow(project):
     try:
         subprocess.call(f"rm r {project}/marshmallow.py", shell=True)
         req = ['flask-marshmallow', 'marshmallow-sqlalchemy']
+        uninstall(req)
+        freeze()
+    except Exception as e:
+        print(e)
+
+def generate_model(project):
+    try:
+        req = ['flask-sqlalchemy']
+        with open(f"{project}/model.py", "w") as _app:
+            _app.write(standard_model.replace("**project", project))
+        
+        with open(f"{project}/__init__.py", "r") as _app:
+            _main = _app.read()
+        _main = _main.replace("app = Flask(__name__)", f"app = Flask(__name__)\n\nfrom {project}.model import *\ndb.init_app(app)", 1)
+        
+        with open(f"{project}/__init__.py", "w") as _app:
+            _app.write(_main)
+
+        install(req)
+        freeze()
+
+    except Exception as e:
+        print(e)
+
+def destroy_model(project):
+    try:
+        subprocess.call(f"rm r {project}/model.py", shell=True)
+        req = ['flask-sqlalchemy']
+        with open(f"{project}/__init__.py", "r") as _app:
+            _main = _app.read()
+        _main = _main.replace(f"from {project}.model import *\ndb.init_app(app)", 1)
+        with open(f"{project}/__init__.py", "w") as _app:
+            _app.write(_main)
         uninstall(req)
         freeze()
     except Exception as e:
@@ -193,6 +226,8 @@ def build_package():
         
         elif "m" in sys.argv or "-marshmallow" in sys.argv:
             generate_marshmallow(project)
+        elif "-model" in sys.argv:
+            generate_model(project)
     
     #Check for destroy request next
     elif "d" in sys.argv or "-destroy" in sys.argv:
