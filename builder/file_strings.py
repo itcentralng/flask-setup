@@ -8,9 +8,8 @@ if __name__ =='__main__':
 
 basic_app = """
 '''
-API APP
+**project
 --------------
-BASIC APP INITIALIZER.
 '''
 #Basic Flask Requirements
 from flask import Flask, request, render_template, url_for, redirect, session, flash
@@ -36,12 +35,12 @@ def app_wide_variables():
     '''
     return dict()
 
-
+# Sample Index Route
 @app.route('/')
 def index():
     return render_template('index.html')
 
-#A Simple 404 error page
+#A Sample 404 error page
 @app.errorhandler(404)
 def page404(e):
     return render_template('404.html')
@@ -49,9 +48,8 @@ def page404(e):
 
 standard_app = """
 '''
-    app
-    --------------
-    Main app initializer.
+**project
+--------------
 '''
 #Basic Flask Requirements
 from flask import Flask, request, render_template, url_for, redirect, session, flash, Response, make_response, send_file, send_from_directory, make_response
@@ -101,7 +99,7 @@ def app_wide_variables():
     '''
     return dict()
 
-#Index Route or Login Route
+#Sample Index Route or Login Route
 @app.route('/', methods=['GET', 'POST'])
 def index():
     '''
@@ -120,7 +118,7 @@ def index():
         flash('Invalid Login Details!')
     return render_template("login.html")
 
-#Dashboard
+#Sample protected page
 @app.route('/protected-route')
 @login_required
 def protected_route():
@@ -145,9 +143,8 @@ def page404(e):
 
 standard_blueprint_app = """
 '''
-    app
-    --------------
-    Main app initializer.
+**project
+--------------
 '''
 #Basic Flask Requirements
 from flask import Flask, request, render_template, url_for, redirect, session, flash, Response, make_response, send_file, send_from_directory, make_response
@@ -192,6 +189,7 @@ def load_user(username):
 from **project.**my_blueprint.routes import **my_blueprint
 app.register_blueprint(**my_blueprint)
 
+#Sample App Context Function
 @app.context_processor
 def app_wide_variables():
     '''
@@ -202,7 +200,7 @@ def app_wide_variables():
     '''
     return dict()
 
-#Index Route or Login Route
+#Sample Index Route or Login Route
 @app.route('/', methods=['GET', 'POST'])
 def index():
     '''
@@ -221,7 +219,7 @@ def index():
         flash('Invalid Login Details!')
     return render_template("login.html")
 
-#Dashboard
+#Sample protected route
 @app.route('/protected-route')
 @login_required
 def protected_route():
@@ -231,14 +229,14 @@ def protected_route():
     return render_template('protected.html')
 
 
-#Logout Route
+#Sample Logout Route
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('protected_route'))
 
-#A Simple 404 error page
+#Sample 404 error page
 @app.errorhandler(404)
 def page404(e):
     return render_template('404.html')
@@ -246,9 +244,8 @@ def page404(e):
 
 basic_blueprint_app = """
 '''
-API APP
+**project
 --------------
-API BASED APP INITIALIZER.
 '''
 #Basic Flask Requirements
 from flask import Flask, request, render_template, url_for, redirect, session, flash
@@ -280,9 +277,8 @@ def index():
     
 basic_blueprint_setup = """
 '''
-MY BLUEPRINT
+**my_blueprint
 --------------
-MY BLUEPRINT INITIALIZER.
 '''
 from flask import Blueprint, request, render_template, redirect, url_for
 
@@ -295,31 +291,28 @@ def index():
 
 standard_blueprint_setup = """
 '''
-MY BLUEPRINT
+**my_blueprint
 --------------
-MY BLUEPRINT INITIALIZER.
 '''
-from flask import Blueprint, request, render_template, redirect, url_for
+# from flask import Blueprint, request, render_template, redirect, url_for
 
-from **project.marshmallow import UserSchema
+# from **project.marshmallow import AuthorSchema
 
-from **project.model import User
+# from **project.model import *
 
-**my_blueprint = Blueprint('**my_blueprint', __name__)
+**my_blueprint = Blueprint('**my_blueprint', __name__, url_prefix='/**my_blueprint')
 
-user_schema = UserSchema(exclude=['password'])
-users_schema = UserSchema(exclude=['password'], many=True)
+author_schema = AuthorSchema(exclude=['id'])
 
 @**my_blueprint.route('/users')
-def teacher_():
-    users = User.query.all()
-    # return {'result':users_schema.dump(users)}
-    return users_schema.jsonify(users)
+def author():
+    author = Author.query.first()
+    return author_schema.jsonify(author)
         """
 
 standard_model = """
 '''
-MY MODEL
+MODEL
 --------------
 '''
 from flask_sqlalchemy import SQLAlchemy
@@ -346,9 +339,10 @@ class User(db.Model, UserMixin):
 
 standard_marshmallow = """
 '''
-MY MARSHMALLOW
+Marshmallow
 --------------
 '''
+
 from **project.model import *
 
 from flask_marshmallow import Marshmallow
@@ -357,14 +351,23 @@ from **project import app
 
 ma = Marshmallow(app)
 
-class UserSchema(ma.ModelSchema):
-    class Meta:
-        model = User
+# Sample Marshmallow Schemas, us this method to make yours
+
+class BookSchema(ma.ModelSchema):
+   class Meta:
+       model = Book
+   include_fk = True #This includes foreignkeys
+
+class AuthorSchema(ma.ModelSchema):
+   class Meta:
+       model = Author
+   include_fk = True #This includes foreignkeys
+   books = ma.Nested("BookSchema", many=True)
         """
 
 standard_methods = """
 '''
-MY METHODS
+METHODS
 --------------
 '''
 import arrow
@@ -386,7 +389,7 @@ def returnTrue():
 
 standard_filters = """
 '''
-MY FILTERS
+JINJA FILTERS
 --------------
 '''
 from **project import app

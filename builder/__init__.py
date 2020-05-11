@@ -50,7 +50,7 @@ def build_basic_app(project='project', with_blueprint=False, blueprint_name='my_
             _app.write('<h1>Welcome to index page from blueprint</h1>')
     else:
         with open(f"{project}/__init__.py", "w") as _app:
-            _app.write(basic_app)
+            _app.write(basic_app.replace("**project", project))
 
 def build_standard_app(project='project', with_blueprint=False, blueprint_name='my_blueprint'):
     os.mkdir(project)
@@ -153,39 +153,65 @@ def destroy_marshmallow(project):
         freeze()
     except Exception as e:
         print(e)
+    
+def initialize_setup(project):
+    try:
+        print(f"Initializing flask_setup in {project}")
+        with open(".flask_setup", "w") as _app:
+            _app.write(f"# Flask Setup Initialization File.\n# Please do not delete this file!\n# If necessary, add it to your .gitinore file to remove it from tracking.\n\nPROJECT: {project}")
+        print("flask-setup is ready!")
+    except Exception as e:
+        print(e)
+
+def get_project_name(project):
+    name = [a for a in sys.argv if a.startswith('--')]
+    if name:
+        project = name[0][2]
+    try:
+        with open(".flask_setup", "r") as _app:
+            name = _app.read()
+            project = name.split("PROJECT: ")[-1][:-1]
+        return project
+    except Exception as e:
+        return project
 
 def build_package():
     global project, with_blueprint, blueprint_name
-    project = [a for a in sys.argv if a.startswith('--')]
-    project = 'project' if not project else project[0][2:]
+
+    project = get_project_name(project)
+
+    if "init" in sys.argv:
+        #Create .flask_setup file with project name inside
+        initialize_setup(project)
     
     #Check for generate request first
-    if "g" in sys.argv or "generate" in sys.argv:
-        if "-blueprint" in sys.argv:
+    elif "g" in sys.argv or "-generate" in sys.argv:
+        if "b" in sys.argv or "-blueprint" in sys.argv:
             if not sys.argv[-1].startswith('-'):
                 blueprint_name = sys.argv[-1]
             generate_blueprint(project, blueprint_name)
         
-        elif "-marshmallow" in sys.argv:
+        elif "m" in sys.argv or "-marshmallow" in sys.argv:
             generate_marshmallow(project)
     
     #Check for destroy request next
-    elif "d" in sys.argv or "destroy" in sys.argv:
-        if "-blueprint" in sys.argv:
+    elif "d" in sys.argv or "-destroy" in sys.argv:
+        if "b" in sys.argv or "-blueprint" in sys.argv:
             if not sys.argv[-1].startswith('-'):
                 blueprint_name = sys.argv[-1]
             destroy_blueprint(project, blueprint_name)
         
-        elif "-marshmallow" in sys.argv:
+        elif "m" in sys.argv or "-marshmallow" in sys.argv:
             destroy_marshmallow(project)
     else:
         res = input("Please ensure you have created a virtual environment and have activated,\n do you have a virtual environment activate? \nProceed? y/n?")
         if res == 'y':
             req = ["flask"]
+            initialize_setup(project)
             print(f'Building your {project} environment please wait....')
 
             if "-basic" in sys.argv:
-                if "-blueprint" in sys.argv:
+                if "b" in sys.argv or "-blueprint" in sys.argv:
                     with_blueprint = True
                 try:
                     build_basic_app(project, with_blueprint, blueprint_name)
@@ -197,7 +223,7 @@ def build_package():
 
             elif "-standard" in sys.argv:
                 req += ["flask-sqlalchemy", "flask-login", "flask-migrate", "flask-script", "flask-wtf", "arrow"]
-                if "-blueprint" in sys.argv:
+                if "b" in sys.argv or "-blueprint" in sys.argv:
                     with_blueprint = True
                     if "-api" in sys.argv:
                         req+= ["flask-marshmallow", "marshmallow-sqlalchemy"]

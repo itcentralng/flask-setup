@@ -13,13 +13,17 @@ Flask Setup Tool
 
 # FLAGS #
 
+0. init: Intialize Flask-Setup in project folder; this makes sure you dont need to pass
+   project name each time you call flask_setup
+    `$ flask_setup init --project_name`
+
 1. -basic: Builds a basic flask app
     `$ flask_setup -basic`
 
 2. -standard: Builds a full web flask app
     `$ flask_setup -standard`
 
-3. -blueprint: this depends on the first two above. Adds
+3. b or -blueprint: this depends on the first two above. Adds
     blueprint to the project: e.g.
     `$ flask_setup -basic -blueprint`
     `$ flask_setup -standard -blueprint`
@@ -33,18 +37,26 @@ Flask Setup Tool
     name to name your project default is 'project'. e.g.:
     `$ flask_setup --myproject -basic -blueprint`
 
-6.  -g or -generate: pass this alongside -blueprint flag to generate
+6.  -g or -generate: pass this alongside b or -blueprint flag to generate
     blueprint on existing project. e.g.:
     `$ flask_setup --myproject g -blueprint myblueprintname`
+    or if you've called the `init` arg you can simply do:
+    `$ flask_setup g -blueprint myblueprintname`
 
-7.  -d or -destroy: pass this alongside -blueprint flag to remove a
+7.  -d or -destroy: pass this alongside b or -blueprint flag to remove a
     blueprint from existing project. e.g.:
     `$ flask_setup --myproject d -blueprint myblueprintname`
+    or if you've called the `init` arg you can simply do:
+    `$ flask_setup d -blueprint myblueprintname`
 
-8.  -g or -generate: pass this alongside -marshmallow flag to generate
+8.  -g or -generate: pass this alongside m or -marshmallow flag to generate
     marshmallow on existing project. e.g.:
     `$ flask_setup --myproject g -marshmallow`
+    or if you've called the `init` arg you can simply do:
+    `$ flask_setup g -marshmallow`
 
-9.  -d or -destroy: pass this alongside -marshmallow flag to remove a
+9.  -d or -destroy: pass this alongside m or -marshmallow flag to remove a
     marshmallow setup from existing project. e.g.:
     `$ flask_setup --myproject d -marshmallow`
+    or if you've called the `init` arg you can simply do:
+    `$ flask_setup d -marshmallow`
