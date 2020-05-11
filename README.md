@@ -60,3 +60,14 @@ Flask Setup Tool
     `$ flask_setup --myproject d -marshmallow`
     or if you've called the `init` arg you can simply do:
     `$ flask_setup d -marshmallow`
+10.  -g or -generate: pass this alongside -model flag to generate
+    model on existing project. e.g.:
+    `$ flask_setup --myproject g -model`
+    or if you've called the `init` arg you can simply do:
+    `$ flask_setup g -model`
+
+11.  -d or -destroy: pass this alongside -model flag to remove a
+    model setup from existing project. e.g.:
+    `$ flask_setup --myproject d -model`
+    or if you've called the `init` arg you can simply do:
+    `$ flask_setup d -model`
