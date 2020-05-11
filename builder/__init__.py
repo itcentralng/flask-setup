@@ -170,7 +170,7 @@ def get_project_name(project):
     try:
         with open(".flask_setup", "r") as _app:
             name = _app.read()
-            project = name.split("PROJECT: ")[-1][:-1]
+            project = name.split("PROJECT: ")[-1].replace("?", "")
         return project
     except Exception as e:
         return project
