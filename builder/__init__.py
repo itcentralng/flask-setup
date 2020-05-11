@@ -169,7 +169,7 @@ def generate_model(project):
         
         with open(f"{project}/config.cfg", "r") as _app:
             _main = _app.read()
-        _main = _main+="\nSQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'"
+        _main += "\nSQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:' #REPLACE WITH YOUR ACTUAL DB URI"
         
         with open(f"{project}/config.cfg", "w") as _app:
             _app.write(_main)
