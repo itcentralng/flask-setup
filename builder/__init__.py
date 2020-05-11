@@ -166,7 +166,7 @@ def initialize_setup(project):
 def get_project_name(project):
     name = [a for a in sys.argv if a.startswith('--')]
     if name:
-        project = name[0][2]
+        project = name[0][2:]
     try:
         with open(".flask_setup", "r") as _app:
             name = _app.read()
