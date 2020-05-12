@@ -193,6 +193,9 @@ def destroy_model(project):
         freeze()
     except Exception as e:
         print(e)
+
+def show_help():
+    print(help_string)
     
 def initialize_setup(project):
     try:
@@ -223,6 +226,10 @@ def build_package():
     if "init" in sys.argv:
         #Create .flask_setup file with project name inside
         initialize_setup(project)
+
+    elif "-help" in sys.argv:
+        #Create .flask_setup file with project name inside
+        show_help()
     
     #Check for generate request first
     elif "g" in sys.argv or "-generate" in sys.argv:

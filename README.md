@@ -9,7 +9,7 @@ Flask Setup Tool
 1. create a virtual environment and activate it:
    `$ python -m venv venv`
    `$ source venv/bin/activate`
-   `$ flask_setup help`
+   `$ flask_setup -help`
 
 # FLAGS #
 
