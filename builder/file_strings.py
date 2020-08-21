@@ -1,4 +1,4 @@
-configuration = "THIS_IS_A_SAMPLE_CONFIG_VARIABLE = \'this is a _sample Config VALUE\'"
+configuration = "SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/db'"
 
 app_run = """
 from **project import app
@@ -17,13 +17,13 @@ from flask import Flask, request, render_template, url_for, redirect, session, f
 import os
 
 #instance of app
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=False)
 
 #cookie generator
 app.secret_key = os.urandom(24)
 
 #configs
-app.config.from_pyfile('config.cfg')
+app.config.from_object(os.environ.get('config'))
 
 @app.context_processor
 def app_wide_variables():
@@ -60,13 +60,13 @@ import os
 from **project.model import db
 
 #instance of app
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=False)
 
 #cookie generator
 app.secret_key = os.urandom(24)
 
 #configs
-app.config.from_pyfile('config.cfg')
+app.config.from_object(os.environ.get('config'))
 
 db.init_app(app)
 
@@ -154,13 +154,13 @@ import os
 from **project.model import db
 
 #instance of app
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=False)
 
 #cookie generator
 app.secret_key = os.urandom(24)
 
 #configs
-app.config.from_pyfile('config.cfg')
+app.config.from_object(os.environ.get('config'))
 
 db.init_app(app)
 
@@ -251,13 +251,13 @@ from flask import Flask, request, render_template, url_for, redirect, session, f
 import os
 
 #instance of app
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=False)
 
 #cookie generator
 app.secret_key = os.urandom(24)
 
 #configs
-app.config.from_pyfile('config.cfg')
+app.config.from_object(os.environ.get('config'))
 
 #TODO: 
 # Modify this import to reflect your desired blueprint
