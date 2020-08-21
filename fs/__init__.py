@@ -1,16 +1,18 @@
 #!/usr/bin/env python
+import os
 
 from fs.config import args
 
-from fs.methods import initialize_setup, get_project_name, build_app
+from fs.methods import initialize_setup, install, uninstall, helper
 
-from fs.generators import generate_blueprint, generate_marshmallow, generate_model
+from fs.app_builder import build_app
+
+from fs.generators import generate_blueprint, generate_marshmallow, generate_model, destroy_blueprint, destroy_marshmallow, destroy_model
 
 def do_work():
 
     #Run if VENV is activated
-    if hasattr(sys, 'real_prefix'):
-        project = get_project_name()
+    if os.environ.get('VIRTUAL_ENV'):
 
         if args.init:
             #Create .flask_setup file with project name inside
@@ -21,24 +23,34 @@ def do_work():
         
         #Check for generate request first
         elif args.generate:
-            if args.blueprint:
+    
+            if args.generate == 'blueprint':
                 return generate_blueprint()
             
-            elif args.marshmallow:
+            elif args.generate == 'marshmallow':
                 return generate_marshmallow()
 
-            elif args.model:
+            elif args.generate == 'model':
                 return generate_model()
         
         #Check for destroy request next
         elif args.destroy:
-            if args.blueprint:
-                return destroy_blueprint(args.blueprint)
+        
+            if args.destroy == 'blueprint':
+                return destroy_blueprint()
             
-            elif args.marshmallow:
-                return destroy_marshmallow(args.marshmallow)
+            elif args.destroy == 'marshmallow':
+                return destroy_marshmallow()
             
-            elif args.model:
-                return destroy_model(args.model)
+            elif args.destroy == 'model':
+                return destroy_model()
+        
+        elif args.install:
+            return install([args.install])
+        
+        elif args.uninstall:
+            return uninstall([args.uninstall])
+        
+        return helper()
     print('Please make sure you have virtual environment installed and activated')
     return False
