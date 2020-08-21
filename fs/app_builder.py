@@ -1,8 +1,8 @@
-from builder.file_strings import configuration, standard_app, basic_app, standard_filters, basic_blueprint_app, basic_blueprint_setup, standard_blueprint_app, standard_blueprint_setup, standard_methods, standard_filters
+from fs.file_strings import configuration, standard_app, basic_app, standard_filters, basic_blueprint_app, basic_blueprint_setup, standard_blueprint_app, standard_blueprint_setup, standard_methods, standard_filters
 
-from builder.methods import install, uninstall, get_project_name
+from fs.methods import install, uninstall, get_project_name
 
-from builder.config import args
+from fs.config import args
 
 def build_basic_app(api=None):
     project = get_project_name()

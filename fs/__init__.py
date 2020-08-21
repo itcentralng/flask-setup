@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from builder.config import args
+from fs.config import args
 
-from builder.methods import initialize_setup, get_project_name, build_app
+from fs.methods import initialize_setup, get_project_name, build_app
 
-from builder.generators import generate_blueprint, generate_marshmallow, generate_model
+from fs.generators import generate_blueprint, generate_marshmallow, generate_model
 
 def do_work():
 

@@ -1,5 +1,5 @@
-from builder.config import args
-from builder.file_strings import standard_blueprint_setup, standard_marshmallow, standard_model
+from fs.config import args
+from fs.file_strings import standard_blueprint_setup, standard_marshmallow, standard_model
 
 def generate_blueprint():
     project = get_project_name()
