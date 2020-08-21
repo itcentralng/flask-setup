@@ -7,7 +7,7 @@
 # Upload
 # python -m twine upload dist/project-version-py3-none-any.whl
 
-from builder import build_package
+from fs import build_package
 
 if __name__ == "__main__":
     build_package()
