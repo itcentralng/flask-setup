@@ -1,4 +1,4 @@
-import argparse, sys
+import argparse
 
 parser = argparse.ArgumentParser()
 

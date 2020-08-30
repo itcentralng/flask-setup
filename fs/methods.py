@@ -1,6 +1,6 @@
 import subprocess
 
-from fs.file_strings import help_string
+from fs.file_strings import help_string, app_run
 
 def install(packages):
     for p in packages:
@@ -59,6 +59,25 @@ def get_project_name():
     except Exception:
         print('It seems you have not intialized flask-setup or you are working outside root of project folder.\nGo to project root and try again.')
     return project
+
+def set_app_runner():
+    project = get_project_name()
+    with open("run.py", "w") as content:
+        content.write(app_run.replace('**project', project))
+    with open(".env", "w") as content:
+        install(['python-dotenv'])
+        content.write('config=config.dev')
+    return True
+
+def destroy_project():
+    try:
+        project = get_project_name()
+        subprocess.check_call(["rm", "-r", project])
+        subprocess.check_call(["rm", "-r", 'config'])
+    except:
+        pass
+    return True
+
 
 def helper():
     print(help_string)

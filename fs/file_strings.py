@@ -268,7 +268,7 @@ from **project.**my_blueprint.routes import **my_blueprint
 # You can register more blueprints here
 app.register_blueprint(**my_blueprint)
 
-@api.route('/')
+@app.route('/')
 def index():
     return render_template('index.html')
         """

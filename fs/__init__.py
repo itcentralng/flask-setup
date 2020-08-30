@@ -3,7 +3,7 @@ import os
 
 from fs.config import args
 
-from fs.methods import initialize_setup, install, uninstall, helper
+from fs.methods import initialize_setup, install, uninstall, helper, get_project_name, destroy_project
 
 from fs.app_builder import build_app
 
@@ -44,6 +44,9 @@ def do_work():
             
             elif args.destroy == 'model':
                 return destroy_model()
+            
+            elif args.destroy == get_project_name():
+                return destroy_project()
         
         elif args.install:
             return install([args.install])

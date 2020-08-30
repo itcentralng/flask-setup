@@ -1,6 +1,6 @@
-from fs.file_strings import configuration, standard_app, basic_app, standard_filters, basic_blueprint_app, basic_blueprint_setup, standard_blueprint_app, standard_blueprint_setup, standard_methods, standard_filters
+from fs.file_strings import configuration, standard_app, basic_app, standard_filters, basic_blueprint_app, basic_blueprint_setup, standard_blueprint_app, standard_blueprint_setup, standard_methods, standard_model, standard_marshmallow, standard_filters
 
-from fs.methods import install, uninstall, get_project_name
+from fs.methods import install, uninstall, get_project_name, set_app_runner
 
 from fs.config import args
 
@@ -17,7 +17,7 @@ def build_basic_app(api=None):
         os.makedirs(templates)
         static = f"{project}/static"
         os.makedirs(static)
-        config = f"{project}/config"
+        config = "config"
         os.makedirs(config)
         with open(f"{templates}/index.html", "w") as _app:
             _app.write('<h1>Welcome to index page</h1>')
@@ -62,7 +62,7 @@ def build_standard_app():
         os.makedirs(templates)
         static = f"{project}/static"
         os.makedirs(static)
-        config = f"{project}/config"
+        config = "config"
         os.makedirs(config)
         with open(f"{templates}/index.html", "w") as _app:
             _app.write('<h1>Welcome to index page</h1>')
@@ -111,6 +111,7 @@ def build_standard_app():
 def build_app(_type):
     allowed_apps = ['api', 'basic', 'standard']
     if _type in allowed_apps:
+        set_app_runner()
         if _type == 'basic':
             return build_basic_app()
         elif _type == 'standard':
