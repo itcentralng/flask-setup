@@ -39,7 +39,7 @@ def initialize_setup(project):
         return False
 
 def gitignore():
-    ignore_flask_setup = "\n#FLASK_SETUP\n.flash_setup"
+    ignore_flask_setup = "\n#FLASK_SETUP\n.flask_setup"
     try:
         with open(".gitignore", "r+") as content:
             new_content = content.read()+ignore_flask_setup
