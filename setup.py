@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
      name='flask_setup',  
      version='0.2.2',
-     scripts=['flask_setup'] ,
+     scripts=['flask_setup.py'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",
      description="A simple tool to help you setup a flask project for web development, API development and just any basic app",
