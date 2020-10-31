@@ -1,6 +1,6 @@
 import subprocess
 
-from fs.file_strings import help_string, app_run
+from flask_setup.file_strings import help_string, app_run
 
 def install(packages):
     for p in packages:

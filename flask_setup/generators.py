@@ -1,10 +1,10 @@
 import os, subprocess
 
-from fs.config import args
+from flask_setup.config import args
 
-from fs.methods import get_project_name, install, uninstall
+from flask_setup.methods import get_project_name, install, uninstall
 
-from fs.file_strings import standard_blueprint_setup, standard_marshmallow, standard_model
+from flask_setup.file_strings import standard_blueprint_setup, standard_marshmallow, standard_model
 
 def generate_blueprint():
     project = get_project_name()

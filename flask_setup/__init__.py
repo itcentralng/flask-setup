@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import os
 
-from fs.config import args
+from flask_setup.config import args
 
-from fs.methods import initialize_setup, install, uninstall, helper, get_project_name, destroy_project
+from flask_setup.methods import initialize_setup, install, uninstall, helper, get_project_name, destroy_project
 
-from fs.app_builder import build_app
+from flask_setup.app_builder import build_app
 
-from fs.generators import generate_blueprint, generate_marshmallow, generate_model, destroy_blueprint, destroy_marshmallow, destroy_model
+from flask_setup.generators import generate_blueprint, generate_marshmallow, generate_model, destroy_blueprint, destroy_marshmallow, destroy_model
 
 def do_work():
 
