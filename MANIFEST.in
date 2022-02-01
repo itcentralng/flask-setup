@@ -1,0 +1,2 @@
+recursive-include apps *
+recursive-include generators *

@@ -430,8 +430,8 @@ help_string = """"
     `$ flask_setup -d blueprint -blueprint myblueprintname`
     OR 
     `$ flask_setup -d model`
-5.  --install or -install: pass this alongside a module e.g.:
-    `$ flask_setup -install flask` this will install flask and freeze to requirements file
-6.  --uninstall or -uninstall: pass this alongside a module e.g.:
-    `$ flask_setup -uninstall flask` this will uninstall flask and freeze to requirements file
+5.  --add or -install: pass this alongside a module e.g.:
+    `$ flask_setup -a flask` this will install flask and freeze to requirements file
+6.  --remove or -r: pass this alongside a module e.g.:
+    `$ flask_setup -r flask` this will uninstall flask and freeze to requirements file
 """

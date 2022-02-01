@@ -1,0 +1,7 @@
+
+#FLASK_SETUP
+.flask_setup
+# Python Related
+*.pyc
+__pycache__
+venv

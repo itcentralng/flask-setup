@@ -24,10 +24,10 @@ def do_work():
         #Check for generate request first
         elif args.generate:
     
-            if args.generate == 'blueprint':
+            if args.generate == 'blueprint' or args.generate == 'b':
                 return generate_blueprint()
             
-            elif args.generate == 'marshmallow':
+            elif args.generate == 'marshmallow' or args.generate == 'm':
                 return generate_marshmallow()
 
             elif args.generate == 'model':
@@ -36,10 +36,10 @@ def do_work():
         #Check for destroy request next
         elif args.destroy:
         
-            if args.destroy == 'blueprint':
+            if args.destroy == 'blueprint' or args.generate == 'b':
                 return destroy_blueprint()
             
-            elif args.destroy == 'marshmallow':
+            elif args.destroy == 'marshmallow' or args.generate == 'm':
                 return destroy_marshmallow()
             
             elif args.destroy == 'model':
@@ -48,11 +48,11 @@ def do_work():
             elif args.destroy == get_project_name():
                 return destroy_project()
         
-        elif args.install:
-            return install([args.install])
+        elif args.add:
+            return install([args.add])
         
-        elif args.uninstall:
-            return uninstall([args.uninstall])
+        elif args.remove:
+            return uninstall([args.remove])
         
         return helper()
     print('Please make sure you have virtual environment installed and activated')
