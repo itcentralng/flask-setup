@@ -36,7 +36,7 @@ def generate_blueprint():
                 content = content.replace(content[last_blueprint:], f"\nfrom {project}.{blueprint_name}.routes import {blueprint_name}\napp.register_blueprint({blueprint_name})\n")
             else:
                 # add the new blueprint
-                content = content.replace("app = Flask(__name__, instance_relative_config=False)", f"app = Flask(__name__, instance_relative_config=False)\n\nfrom {project}.{blueprint_name}.routes import {blueprint_name}\napp.register_blueprint({blueprint_name})\n")
+                content = content.replace("app = Flask(__name__)", f"app = Flask(__name__)\n\nfrom {project}.{blueprint_name}.routes import {blueprint_name}\napp.register_blueprint({blueprint_name})\n")
             with open(f"{project}/__init__.py", "w") as main_app:
                 main_app.write(content)
         print(f'Blueprint: "{blueprint_name}" successfully generated')
@@ -116,7 +116,7 @@ def generate_model():
             if f"from {project}.model import db" in content:
                 content = content.replace(f"from {project}.model import db", f"from {project}.model import db\nfrom {project}.model import User")
             else:
-                content = content.replace("app = Flask(__name__, instance_relative_config=False)", f"app = Flask(__name__, instance_relative_config=False)\n\nfrom {project}.model import db\ndb.init_app(app)\n")
+                content = content.replace("app = Flask(__name__)", f"app = Flask(__name__)\n\nfrom {project}.model import db\ndb.init_app(app)\n")
             with open(f"{project}/__init__.py", "w") as main_app:
                 main_app.write(content)
         install(req)

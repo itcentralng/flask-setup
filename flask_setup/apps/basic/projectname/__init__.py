@@ -9,7 +9,7 @@ from flask import Flask
 import os
 
 #instance of app
-app = Flask(__name__, instance_relative_config=False)
+app = Flask(__name__)
 
 #cookie generator
 app.secret_key = os.urandom(24)
