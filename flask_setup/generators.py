@@ -134,7 +134,7 @@ def destroy_model():
         req = ['flask-sqlalchemy']
         with open(f"{project}/__init__.py", "r") as main_app:
             content = main_app.read()
-        content = content.replace(f"\n\nfrom {project}.model import db\ndb.init_app(app)", "")
+        content = content.replace(f"\n\nfrom {project}.model import db\ndb.init_app(app)\n", "")
         with open(f"{project}/__init__.py", "w") as main_app:
             main_app.write(content)
         uninstall(req)
