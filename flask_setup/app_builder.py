@@ -10,15 +10,14 @@ from distutils.dir_util import copy_tree
 
 
 def build_app(name):
-    allowed_apps = ['api', 'basic', 'blog', 'ecommerce']
+    allowed_apps = ['api', 'basic', 'website']
     if name in allowed_apps:
         try:
             project = get_project_name()
             requirements = {
                 'api':["flask", "flask-marshmallow", "flask-sqlalchemy"],
                 'basic':["flask", "flask-marshmallow", "flask-sqlalchemy"],
-                'blog':["flask", "flask-marshmallow", "flask-sqlalchemy"],
-                'ecommerce':["flask", "flask-marshmallow", "flask-sqlalchemy"]
+                'website':["flask"]
             }
             # get the original path to this file even when imported from another file
             path = os.path.dirname(os.path.realpath(__file__))
@@ -34,7 +33,7 @@ def build_app(name):
             # loop through files in project directory and replace projectname with project
             for root, dirs, files in os.walk(project):
                 for file in files:
-                    if file.endswith('.py'):
+                    if file.endswith('.py') or file.endswith('.html'):
                         with open(os.path.join(root, file), 'r') as f:
                             filedata = f.read()
                         filedata = filedata.replace('projectname', project)
