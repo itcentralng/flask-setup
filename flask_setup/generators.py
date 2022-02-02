@@ -114,9 +114,9 @@ def generate_model():
         with open(f"{project}/__init__.py", "r") as main_app:
             content = main_app.read()
             if f"from {project}.model import db" in content:
-                content = content.replace(f"from {project}.model import db", f"from {project}.model import db\nfrom {project}.model import User")
+                pass
             else:
-                content = content.replace("app = Flask(__name__)", f"app = Flask(__name__)\n\nfrom {project}.model import db\ndb.init_app(app)\n")
+                content = content.replace("app.config.from_object('config')", f"app.config.from_object('config')\n\nfrom {project}.model import db\ndb.init_app(app)\n")
             with open(f"{project}/__init__.py", "w") as main_app:
                 main_app.write(content)
         install(req)
@@ -134,7 +134,7 @@ def destroy_model():
         req = ['flask-sqlalchemy']
         with open(f"{project}/__init__.py", "r") as main_app:
             content = main_app.read()
-        content = content.replace(f"from {project}.model import db\ndb.init_app(app)", "")
+        content = content.replace(f"\n\nfrom {project}.model import db\ndb.init_app(app)", "")
         with open(f"{project}/__init__.py", "w") as main_app:
             main_app.write(content)
         uninstall(req)
