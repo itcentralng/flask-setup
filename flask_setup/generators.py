@@ -29,11 +29,14 @@ def generate_blueprint():
         with open(f"{project}/__init__.py", "r") as main_app:
             # check if there is already a blueprint and add this after it
             content = main_app.read()
-            if "app.register_blueprint" in main_app:
+            # check if 'app.register_blueprint' is in content
+            if "app.register_blueprint" in content:
                 # find the last blueprint
                 last_blueprint = content.rfind(".register_blueprint")
-                # add the new blueprint
-                content = content.replace(content[last_blueprint:], f"\nfrom {project}.{blueprint_name}.routes import {blueprint_name}\napp.register_blueprint({blueprint_name})\n")
+                # find the immediate line after the last blueprint
+                next_line = content.find("\n", last_blueprint)
+                # add the new blueprint after the last blueprint
+                content = content[:next_line] + f"\nfrom {project}.{blueprint_name}.routes import {blueprint_name}\napp.register_blueprint({blueprint_name})" + content[next_line:]
             else:
                 # add the new blueprint
                 content = content.replace("app = Flask(__name__)", f"app = Flask(__name__)\n\nfrom {project}.{blueprint_name}.routes import {blueprint_name}\napp.register_blueprint({blueprint_name})\n")
@@ -53,8 +56,8 @@ def destroy_blueprint():
         subprocess.call(f"rm -r {blueprint}", shell=True)
         with open(f"{project}/__init__.py", "r") as main_app:
             content = main_app.read()
-        content = content.replace(f"from {project}.{blueprint_name}.routes import {blueprint_name}\n", "")
-        content = content.replace(f"app.register_blueprint({blueprint_name})\n", "")
+        content = content.replace(f"\nfrom {project}.{blueprint_name}.routes import {blueprint_name}", "")
+        content = content.replace(f"\napp.register_blueprint({blueprint_name})", "")
         with open(f"{project}/__init__.py", "w") as main_app:
             main_app.write(content)
         print(f'Blueprint: "{blueprint_name}" successfully destroyed')
