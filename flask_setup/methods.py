@@ -28,8 +28,8 @@ def initialize_setup(project):
     for i in invalids:
         project = project.replace(i, '_')
     try:
-        print(f"Initializing flask_setup in {project}")
-        with open(".flask_setup", "w") as _app:
+        print(f"Initializing Flask Setup in {project}")
+        with open(".fs", "w") as _app:
             _app.write(f"# Flask Setup Initialization File.\n# Please do not delete this file!\n# If necessary, add it to your .gitinore file to remove it from tracking.\n\nPROJECT: {project}")
             gitignore()
         print(f"{project} is ready!")
@@ -39,7 +39,7 @@ def initialize_setup(project):
         return False
 
 def gitignore():
-    ignore_flask_setup = "\n#FLASK_SETUP\n.flask_setup"
+    ignore_flask_setup = "\n#FLASK SETUP\n.fs"
     try:
         with open(".gitignore", "r+") as content:
             new_content = content.read()+ignore_flask_setup
@@ -51,13 +51,13 @@ def gitignore():
 def get_project_name():
     project = None
     try:
-        with open('.flask_setup', 'r') as _file:
+        with open('.fs', 'r') as _file:
             lines = _file.readlines()
             for line in lines:
                 if line.startswith('PROJECT:'):
                     project = line.split(': ')[-1]
     except Exception:
-        print('It seems you have not intialized flask-setup or you are working outside root of project folder.\nGo to project root and try again.')
+        print('It seems you have not intialized flask-setup or you are working outside root of project folder.\nGo to project root and try again.\nHowever if you are working inside project folder, consider renaming your .flask_setup file to .fs')
     return project
 
 def set_app_runner():
