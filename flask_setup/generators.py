@@ -102,7 +102,7 @@ def destroy_marshmallow():
 def generate_model():
     project = get_project_name()
     try:
-        req = ['flask-sqlalchemy']
+        req = ['flask-sqlalchemy', 'flask-migrate']
         # get the original path to this file even when imported from another file
         path = os.path.dirname(os.path.realpath(__file__))
         # copy model files
@@ -119,7 +119,7 @@ def generate_model():
             if f"from {project}.model import db" in content:
                 pass
             else:
-                content = content.replace("app.config.from_object('config')", f"app.config.from_object('config')\n\nfrom {project}.model import db\ndb.init_app(app)\n")
+                content = content.replace("app.config.from_object('config')", f"app.config.from_object('config')\n\nfrom {project}.model import db\ndb.init_app(app)\nfrom flask_migrate import Migrate\nmigrate = Migrate(app, db)\n")
             with open(f"{project}/__init__.py", "w") as main_app:
                 main_app.write(content)
         install(req)

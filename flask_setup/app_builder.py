@@ -15,8 +15,8 @@ def build_app(name):
         try:
             project = get_project_name()
             requirements = {
-                'api':["flask", "flask-marshmallow", "flask-sqlalchemy"],
-                'basic':["flask", "flask-marshmallow", "flask-sqlalchemy"],
+                'api':["flask", "flask-marshmallow", "flask-sqlalchemy", "flask-migrate", "flask-httpauth"],
+                'basic':["flask", "flask-sqlalchemy", "flask-migrate"],
                 'website':["flask"]
             }
             # get the original path to this file even when imported from another file
