@@ -1,4 +1,5 @@
 import os, subprocess
+import re
 import shutil
 
 from flask_setup.config import args
@@ -51,7 +52,7 @@ def generate_blueprint():
 
 def destroy_blueprint():
     project = get_project_name()
-    blueprint_name = args.blueprint
+    blueprint_name = args.name
     try:
         blueprint = f"{project}/{blueprint_name}"
         subprocess.call(f"rm -r {blueprint}", shell=True)
@@ -108,12 +109,29 @@ def generate_marshmallow():
 
 def destroy_marshmallow():
     project = get_project_name()
+    name = args.name if args.name else None
     try:
-        subprocess.call(f"rm {project}/marshmallow.py", shell=True)
-        req = ['flask-marshmallow', 'marshmallow-sqlalchemy']
-        uninstall(req)
-        print(f'Marshmallow successfully destroyed')
-        return True
+        if name:
+            name = f'\n\nclass {name.capitalize()}Schema'
+            with open(f"{project}/marshmallow.py", "r") as marsh:
+                content = marsh.read()
+            # use regex to find the line with the schema
+            schema_line = re.search(f'{name}', content)
+            # get the line number of the schema
+            start_line = schema_line.start()
+            # get the line number of the end of the schema
+            end_line = content.find("\n\n", start_line)
+            # remove the schema
+            content = content[:start_line] + content[end_line:]
+            with open(f"{project}/marshmallow.py", "w") as marsh:
+                marsh.write(content)
+                print(f'{name} removed')
+        else:
+            subprocess.call(f"rm {project}/marshmallow.py", shell=True)
+            req = ['flask-marshmallow', 'marshmallow-sqlalchemy']
+            uninstall(req)
+            print(f'Marshmallow successfully destroyed')
+            return True
     except Exception as e:
         print(e)
         return False
@@ -169,16 +187,34 @@ def generate_model():
 
 def destroy_model():
     project = get_project_name()
+    name = args.name if args.name else None
     try:
-        subprocess.call(f"rm {project}/model.py", shell=True)
-        req = ['flask-sqlalchemy']
-        with open(f"{project}/__init__.py", "r") as main_app:
-            content = main_app.read()
-        content = content.replace(f"\n\nfrom {project}.model import db\ndb.init_app(app)\n", "")
-        with open(f"{project}/__init__.py", "w") as main_app:
-            main_app.write(content)
-        uninstall(req)
-        print(f'Model successfully destroyed')
+        if name:
+            name = f'\n\nclass {name.capitalize()}'
+            with open(f"{project}/model.py", "r") as model:
+                content = model.read()
+            # use regex to find the line with the model
+            model_line = re.search(f'{name}', content)
+            # get the line number of the model
+            start_line = model_line.start()
+            # get the line number of the end of the model
+            end_line = content.find("\n\n", start_line)
+            # remove the model
+            content = content[:start_line] + content[end_line:]
+
+            with open(f"{project}/model.py", "w") as model:
+                model.write(content)
+                print(f'{name} removed')
+        else:
+            subprocess.call(f"rm {project}/model.py", shell=True)
+            req = ['flask-sqlalchemy']
+            with open(f"{project}/__init__.py", "r") as main_app:
+                content = main_app.read()
+            content = content.replace(f"\n\nfrom {project}.model import db\ndb.init_app(app)\n", "")
+            with open(f"{project}/__init__.py", "w") as main_app:
+                main_app.write(content)
+            uninstall(req)
+            print(f'Model successfully destroyed')
         return True
     except Exception as e:
         print(e)
