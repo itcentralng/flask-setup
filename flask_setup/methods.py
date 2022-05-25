@@ -5,7 +5,10 @@ from flask_setup.file_strings import help_string, app_run
 def install(packages):
     for p in packages:
         print("\n new package: ", p)
-        subprocess.check_call(["pip", "install", p])
+        if p == 'all':
+            subprocess.check_call(["pip", "install", "-r", "requirements.txt"])
+        else:
+            subprocess.check_call(["pip", "install", p])
     freeze()
     return True
 
