@@ -1,8 +1,4 @@
-# from flask_setup.file_strings import configuration, standard_app, basic_app, standard_filters, basic_blueprint_app, basic_blueprint_setup, standard_blueprint_app, standard_blueprint_setup, standard_methods, standard_model, standard_marshmallow, standard_filters
-
 from flask_setup.methods import install, get_project_name
-
-# from flask_setup.config import args
 
 import os
 
