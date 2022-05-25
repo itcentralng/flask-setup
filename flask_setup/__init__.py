@@ -15,7 +15,7 @@ def do_work():
     if os.environ.get('VIRTUAL_ENV'):
 
         if args.init:
-            #Create .flask_setup file with project name inside
+            #Create .fs file with project name inside
             return initialize_setup(args.init)
         
         elif args.build:

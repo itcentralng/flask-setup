@@ -1,6 +1,6 @@
 
 #FLASK_SETUP
-.flask_setup
+.fs
 # Python Related
 *.pyc
 __pycache__
