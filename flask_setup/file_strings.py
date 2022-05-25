@@ -14,6 +14,11 @@ class **modelSchema(ma.SQLAlchemyAutoSchema):
    include_relationship = True
    """
 
+sample_model = """
+class **model(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+   """
+
 help_string = """"
 # USAGE #
 

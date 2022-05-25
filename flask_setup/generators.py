@@ -4,7 +4,7 @@ import shutil
 from flask_setup.config import args
 
 from flask_setup.methods import get_project_name, install, uninstall
-from flask_setup.file_strings import sample_marshmallow_schema
+from flask_setup.file_strings import sample_marshmallow_schema, sample_model
 
 from distutils.dir_util import copy_tree
 
@@ -120,29 +120,47 @@ def destroy_marshmallow():
 
 def generate_model():
     project = get_project_name()
+    name = args.name if args.name else None
     try:
-        req = ['flask-sqlalchemy', 'flask-migrate']
-        # get the original path to this file even when imported from another file
-        path = os.path.dirname(os.path.realpath(__file__))
-        # copy model files
-        shutil.copyfile(f"{path}/generators/model.py", f"{project}/model.py")
-        # replace project name
-        with open(f"{project}/model.py", "r") as model:
-            content = model.read()
-        content = content.replace("projectname", project)
-        with open(f"{project}/model.py", "w") as model:
-            model.write(content)
-        # add model to __init__.py
-        with open(f"{project}/__init__.py", "r") as main_app:
-            content = main_app.read()
-            if f"from {project}.model import db" in content:
-                pass
-            else:
-                content = content.replace("app.config.from_object('config')", f"app.config.from_object('config')\n\nfrom {project}.model import db\ndb.init_app(app)\nfrom flask_migrate import Migrate\nmigrate = Migrate(app, db)\n")
-            with open(f"{project}/__init__.py", "w") as main_app:
-                main_app.write(content)
-        install(req)
-        print(f'Model successfully generated')
+        # check if model.py already exists
+        if not os.path.isfile(f"{project}/model.py"):
+            req = ['flask-sqlalchemy', 'flask-migrate']
+            # get the original path to this file even when imported from another file
+            path = os.path.dirname(os.path.realpath(__file__))
+            # copy model files
+            shutil.copyfile(f"{path}/generators/model.py", f"{project}/model.py")
+            # replace project name
+            with open(f"{project}/model.py", "r") as model:
+                content = model.read()
+            content = content.replace("projectname", project)
+            with open(f"{project}/model.py", "w") as model:
+                model.write(content)
+            # add model to __init__.py
+            with open(f"{project}/__init__.py", "r") as main_app:
+                content = main_app.read()
+                if f"from {project}.model import db" in content:
+                    pass
+                else:
+                    content = content.replace("app.config.from_object('config')", f"app.config.from_object('config')\n\nfrom {project}.model import db\ndb.init_app(app)\nfrom flask_migrate import Migrate\nmigrate = Migrate(app, db)\n")
+                with open(f"{project}/__init__.py", "w") as main_app:
+                    main_app.write(content)
+            install(req)
+            print(f'Model successfully generated')
+            if name:
+                print(f'Adding {name} to model.py')
+                # open model.py and sample_model
+                with open(f"{project}/model.py", "a") as model:
+                    model.write(sample_model.replace('**model', name.capitalize()))
+                print(f'Done!')
+            return True
+        if name:
+            print(f'Adding {name} to model.py')
+            # open model.py and sample_model
+            with open(f"{project}/model.py", "a") as model:
+                model.write(sample_model.replace('**model', name.capitalize()))
+            print(f'Done!')
+        else:
+            print('No model provided or model.py already exists')
         return True
 
     except Exception as e:
