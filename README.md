@@ -21,7 +21,7 @@ Flask Setup Tool
     `$ fs --build api` OR `$ fs -b api`
 
 3. --generate or -g: Takes generator type; currently supports ['model', 'marshmallow', 'blueprint'] e.g.
-    `$ fs --generate blueprint -blueprint api` this will generate a blueprint with the name 'api'
+    `$ fs --generate blueprint -name api` this will generate a blueprint with the name 'api'
     OR 
     `$ fs --generate model`
 
