@@ -4,12 +4,13 @@ import shutil
 from flask_setup.config import args
 
 from flask_setup.methods import get_project_name, install, uninstall
+from flask_setup.file_strings import sample_marshmallow_schema
 
 from distutils.dir_util import copy_tree
 
 def generate_blueprint():
     project = get_project_name()
-    blueprint_name = args.blueprint
+    blueprint_name = args.name if args.name else 'api'
     content = ""
     try:
         # make blueprint folder
@@ -68,19 +69,37 @@ def destroy_blueprint():
 
 def generate_marshmallow():
     project = get_project_name()
+    name = args.name if args.name else None
     try:
-        req = ['flask-marshmallow', 'marshmallow-sqlalchemy']
-        path = os.path.dirname(os.path.realpath(__file__))
-        # copy marshmallow files
-        shutil.copyfile(f"{path}/generators/marshmallow.py", f"{project}/marshmallow.py")
-        # replace project name
-        with open(f"{project}/marshmallow.py", "r") as marsh:
-            content = marsh.read()
-        content = content.replace("projectname", project)
-        with open(f"{project}/marshmallow.py", "w") as marsh:
-            marsh.write(content)
-        install(req)
-        print(f'Marshmallow successfully generated')
+        # check if marshmallow.py already exists
+        if not os.path.isfile(f"{project}/marshmallow.py"):
+            req = ['flask-marshmallow', 'marshmallow-sqlalchemy']
+            path = os.path.dirname(os.path.realpath(__file__))
+            # copy marshmallow files
+            shutil.copyfile(f"{path}/generators/marshmallow.py", f"{project}/marshmallow.py")
+            # replace project name
+            with open(f"{project}/marshmallow.py", "r") as marsh:
+                content = marsh.read()
+            content = content.replace("projectname", project)
+            with open(f"{project}/marshmallow.py", "w") as marsh:
+                marsh.write(content)
+            install(req)
+            print(f'Marshmallow successfully generated')
+            if name:
+                print(f'Adding {name}Schema to marshamallow.py')
+                # open marshmallow.py and sample_marshmallow_schema
+                with open(f"{project}/marshmallow.py", "a") as marsh:
+                    marsh.write(sample_marshmallow_schema.replace('**model', name.capitalize()))
+                print(f'Done!')
+            return True
+        if name:
+            print(f'Adding {name}Schema to marshamallow.py')
+            # open marshmallow.py and sample_marshmallow_schema
+            with open(f"{project}/marshmallow.py", "a") as marsh:
+                marsh.write(sample_marshmallow_schema.replace('**model', name.capitalize()))
+            print(f'Done!')
+        else:
+            print('No model provided or marshmallow.py already exists')
         return True
 
     except Exception as e:

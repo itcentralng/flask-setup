@@ -5,7 +5,15 @@ from **project import app
 if __name__ =='__main__':
     app.run()
         """
-        
+
+sample_marshmallow_schema = """
+class **modelSchema(ma.SQLAlchemyAutoSchema):
+   class Meta:
+       model = **model
+   include_fk = True
+   include_relationship = True
+   """
+
 help_string = """"
 # USAGE #
 
