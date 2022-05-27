@@ -8,16 +8,14 @@ if __name__ =='__main__':
 
 sample_marshmallow_schema = """
 class **modelSchema(ma.SQLAlchemyAutoSchema):
-   class Meta:
-       model = **model
-   include_fk = True
-   include_relationship = True
-   """
+    class Meta:
+        model = **model
+    include_fk = True
+    include_relationship = True\n"""
 
 sample_model = """
 class **model(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-   """
+    id = db.Column(db.Integer, primary_key=True)\n"""
 
 help_string = """"
 # USAGE #

@@ -87,6 +87,12 @@ def generate_marshmallow():
             install(req)
             print(f'Marshmallow successfully generated')
             if name:
+                # check if model of the same name exists in model.py
+                with open(f"{project}/model.py", "r") as model:
+                    content = model.read()
+                    if not f'class {name.capitalize()}' in content:
+                        print(f"Please create a db model named: {name.capitalize()} first")
+                        return False
                 print(f'Adding {name}Schema to marshamallow.py')
                 # open marshmallow.py and sample_marshmallow_schema
                 with open(f"{project}/marshmallow.py", "a") as marsh:
@@ -94,6 +100,18 @@ def generate_marshmallow():
                 print(f'Done!')
             return True
         if name:
+            # check if model of the same name exists in model.py
+            with open(f"{project}/model.py", "r") as model:
+                content = model.read()
+                if not f'class {name.capitalize()}' in content:
+                    print(f"Please create a db model named: {name.capitalize()} first")
+                    return False
+            # check if the schema already exists
+            with open(f"{project}/marshmallow.py", "r") as marsh:
+                content = marsh.read()
+            if f"{name.capitalize()}Schema" in content:
+                print(f'{name.capitalize()}Schema already exists')
+                return False
             print(f'Adding {name}Schema to marshamallow.py')
             # open marshmallow.py and sample_marshmallow_schema
             with open(f"{project}/marshmallow.py", "a") as marsh:
@@ -112,20 +130,23 @@ def destroy_marshmallow():
     name = args.name if args.name else None
     try:
         if name:
-            name = f'\n\nclass {name.capitalize()}Schema'
+            name = f'class {name.capitalize()}Schema'
             with open(f"{project}/marshmallow.py", "r") as marsh:
                 content = marsh.read()
             # use regex to find the line with the schema
-            schema_line = re.search(f'{name}', content)
-            # get the line number of the schema
-            start_line = schema_line.start()
-            # get the line number of the end of the schema
-            end_line = content.find("\n\n", start_line)
-            # remove the schema
-            content = content[:start_line] + content[end_line:]
-            with open(f"{project}/marshmallow.py", "w") as marsh:
-                marsh.write(content)
-                print(f'{name} removed')
+            schema_line = re.search(f'\n{name}', content)
+            if schema_line:
+                # get the line number of the schema
+                start_line = schema_line.start()
+                # get the line number of the end of the schema
+                end_line = content.find("\n\n", start_line)
+                # remove the schema
+                content = content[:start_line-1] + content[end_line:]
+                with open(f"{project}/marshmallow.py", "w") as marsh:
+                    marsh.write(content)
+                    print(f'{name} removed')
+            else:
+                print(f'{name} not found')
         else:
             subprocess.call(f"rm {project}/marshmallow.py", shell=True)
             req = ['flask-marshmallow', 'marshmallow-sqlalchemy']
@@ -172,6 +193,12 @@ def generate_model():
                 print(f'Done!')
             return True
         if name:
+            # check if the model already exists
+            with open(f"{project}/model.py", "r") as model:
+                content = model.read()
+            if f"class {name.capitalize()}" in content:
+                print(f'{name.capitalize()} already exists')
+                return False
             print(f'Adding {name} to model.py')
             # open model.py and sample_model
             with open(f"{project}/model.py", "a") as model:
@@ -190,21 +217,24 @@ def destroy_model():
     name = args.name if args.name else None
     try:
         if name:
-            name = f'\n\nclass {name.capitalize()}'
+            name = f'class {name.capitalize()}'
             with open(f"{project}/model.py", "r") as model:
                 content = model.read()
             # use regex to find the line with the model
-            model_line = re.search(f'{name}', content)
-            # get the line number of the model
-            start_line = model_line.start()
-            # get the line number of the end of the model
-            end_line = content.find("\n\n", start_line)
-            # remove the model
-            content = content[:start_line] + content[end_line:]
+            model_line = re.search(f'\n{name}', content)
+            if model_line:
+                # get the line number of the model
+                start_line = model_line.start()
+                # get the line number of the end of the model
+                end_line = content.find("\n\n", start_line)
+                # remove the model
+                content = content[:start_line-1] + content[end_line:]
 
-            with open(f"{project}/model.py", "w") as model:
-                model.write(content)
-                print(f'{name} removed')
+                with open(f"{project}/model.py", "w") as model:
+                    model.write(content)
+                    print(f'{name} removed')
+            else:
+                print(f'{name} not found')
         else:
             subprocess.call(f"rm {project}/model.py", shell=True)
             req = ['flask-sqlalchemy']
