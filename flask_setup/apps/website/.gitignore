@@ -1,7 +1,0 @@
-
-#FLASK_SETUP
-.fs
-# Python Related
-*.pyc
-__pycache__
-venv

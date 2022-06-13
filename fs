@@ -7,7 +7,7 @@
 # Upload
 # python -m twine upload dist/project-version-py3-none-any.whl
 
-from flask_setup import do_work
+from flask_setup import run
 
 if __name__ == "__main__":
-    do_work()
+    run()

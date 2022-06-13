@@ -3,7 +3,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
     setup(
      name='flask_setup',  
-     version='0.3.5',
+     version='0.4.0',
      scripts=['fs'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",
@@ -12,60 +12,46 @@ with open("README.md", "r") as fh:
      long_description_content_type="text/markdown",
      url="https://github.com/mrteey/flask-setup",
      packages=find_packages(),
-     data_files=[('apps', [
-         'flask_setup/apps/api/config/__init__.py',
-         'flask_setup/apps/api/projectname/__init__.py',
-         'flask_setup/apps/api/.env',
-         'flask_setup/apps/api/.gitignore',
-         'flask_setup/apps/api/run.py',
-
-         'flask_setup/apps/basic/config/__init__.py',
-         'flask_setup/apps/basic/projectname/__init__.py',
-         'flask_setup/apps/basic/projectname/static/css/style.css',
-         'flask_setup/apps/basic/projectname/static/js/script.js',
-         'flask_setup/apps/basic/projectname/templates/index.html',
-         'flask_setup/apps/basic/.env',
-         'flask_setup/apps/basic/.gitignore',
-         'flask_setup/apps/basic/run.py',
+     install_requires=['typer'],
+     data_files=[('starter', [
          
-         'flask_setup/apps/website/config/__init__.py',
-         'flask_setup/apps/website/projectname/__init__.py',
-         'flask_setup/apps/website/projectname/static/assets/beach.jpg',
-         'flask_setup/apps/website/projectname/static/assets/bike.jpg',
-         'flask_setup/apps/website/projectname/static/assets/city.jpg',
-         'flask_setup/apps/website/projectname/static/assets/colors.jpg',
-         'flask_setup/apps/website/projectname/static/assets/deer.jpg',
-         'flask_setup/apps/website/projectname/static/assets/lake.jpg',
-         'flask_setup/apps/website/projectname/static/css/animate.min.css',
-         'flask_setup/apps/website/projectname/static/css/bootstrap.min.css',
-         'flask_setup/apps/website/projectname/static/css/ionicons.min.css',
-         'flask_setup/apps/website/projectname/static/css/styles.css',
-         'flask_setup/apps/website/projectname/static/fonts/ionicons.eot',
-         'flask_setup/apps/website/projectname/static/fonts/ionicons.woff',
-         'flask_setup/apps/website/projectname/static/fonts/ionicons.ttf',
-         'flask_setup/apps/website/projectname/static/js/bootstrap.min.js',
-         'flask_setup/apps/website/projectname/static/js/jquery.min.js',
-         'flask_setup/apps/website/projectname/static/js/jquery.easing.min.js',
-         'flask_setup/apps/website/projectname/static/js/scripts.js',
-         'flask_setup/apps/website/projectname/static/js/wow.js',
-         'flask_setup/apps/website/projectname/templates/index.html',
-         'flask_setup/apps/website/.env',
-         'flask_setup/apps/website/.gitignore',
-         'flask_setup/apps/website/run.py',
+         'flask_setup/starter/app/user/controller.py',
+         'flask_setup/starter/app/user/model.py',
+         'flask_setup/starter/app/user/schema.py',
+         
+         'flask_setup/starter/app/__init__.py',
+         'flask_setup/starter/app/error_handlers.py',
+         'flask_setup/starter/app/route_guard.py',
+         
+         'flask_setup/starter/config/__init__.py',
+         'flask_setup/starter/config/db.py',
+         'flask_setup/starter/config/jwt.py',
+         
+         'flask_setup/starter/helpers/__init__.py',
+         'flask_setup/starter/helpers/time_helper.py',
+         
+         'flask_setup/starter/main.py',
+         'flask_setup/starter/manage.py',
+         
+         'flask_setup/starter/Dockerfile',
+         'flask_setup/starter/supervisord.conf',
+         'flask_setup/starter/requirements.txt',
+         'flask_setup/starter/run',
+
          ]),
       ('generators', [
-          'flask_setup/generators/blueprint/__init__.py',
-          'flask_setup/generators/blueprint/routes.py',
-          'flask_setup/generators/blueprint/static/css/style.css',
-          'flask_setup/generators/blueprint/static/js/script.js',
-          'flask_setup/generators/blueprint/templates/blueprintname/index.html',
-          'flask_setup/generators/marshmallow.py',
-          'flask_setup/generators/model.py',
+          'flask_setup/generators/blueprint/controller.py',
+         'flask_setup/generators/blueprint/model.py',
+         'flask_setup/generators/blueprint/schema.py',
+
+         'flask_setup/generators/samples/sample.model.py',
+         'flask_setup/generators/samples/sample.schema.py',
+         'flask_setup/generators/samples/user.model.py',
           ])],
      include_package_data=True,
      entry_points={
         'console_scripts': [
-            'fs=flask_setup:do_work',
+            'fs=flask_setup:run',
         ]
     },
      classifiers=[
