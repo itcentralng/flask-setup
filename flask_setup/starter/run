@@ -1,0 +1,1 @@
+PYTHONDONTWRITEBYTECODE=1 FLASK_APP=main FLASK_ENV=development flask run
