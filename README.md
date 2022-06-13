@@ -28,3 +28,6 @@ Flask Setup Tool
 
 6.  destroy: This will destroy the current project e.g.:
     `$ fs destroy`
+
+7.  init: Initializes fs on an existing project with similar setup e.g.:
+    `$ fs init`
