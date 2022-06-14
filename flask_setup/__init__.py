@@ -19,7 +19,6 @@ def init():
     do_add_log(".fs file created")
 
 @app.command()
-@before_command
 def build(project: str = ''):
 
     while project == '':
