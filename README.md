@@ -12,7 +12,7 @@ Flask Setup Tool
 # COMMANDS #
 
 1. build: Builds the project.
-    `$ fs build`
+    `$ fs build [project name]`
 
 2. add: Takes blueprint name e.g.
     `$ fs add api` this will add a blueprint with the name 'api'
