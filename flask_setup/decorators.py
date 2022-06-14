@@ -13,3 +13,12 @@ def before_command(f):
             return
         return f(*args, **kwargs)
     return decorated
+
+def new_project_command(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if os.path.isfile('.fs'):
+            typer.echo('Project already initialized')
+            return
+        return f(*args, **kwargs)
+    return decorated

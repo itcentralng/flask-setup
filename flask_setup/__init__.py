@@ -3,22 +3,21 @@ import os
 from shutil import copytree
 import typer
 
-from flask_setup.decorators import before_command
+from flask_setup.decorators import before_command, new_project_command
 from flask_setup.methods import do_add_log, do_freeze
 
 app = typer.Typer()
 
 @app.command()
+@new_project_command
 def init():
     """
     Initialize .fs
     """
-    if os.path.exists(".fs"):
-        typer.echo("File .fs already exists")
-        return
     do_add_log(".fs file created")
 
 @app.command()
+@new_project_command
 def build(project: str = ''):
 
     while project == '':
