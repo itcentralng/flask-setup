@@ -37,6 +37,12 @@ def build(project: str):
     # create virtual environment
     os.system('python3 -m venv venv') if os.name == 'posix' else os.system('py -m venv venv')
 
+    # deactivate any existing virtual environment
+    os.system('deactivate')
+
+    # activate virtual environment
+    os.system('source venv/bin/activate') if os.name == 'posix' else os.system('venv\Scripts\activate.bat')
+
     # install requirements
     os.system(f'pip install -r requirements.txt')
     log = 'Project built successfully'
