@@ -1,5 +1,5 @@
-from .. import ma
-from .model import *
+from app import ma
+from app.user.model import *
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

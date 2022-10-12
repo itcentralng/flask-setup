@@ -1,7 +1,7 @@
 from flask import Blueprint, g, jsonify, request
 
-from .model import User
-from .schema import UserSchema
+from app.user.model import User
+from app.user.schema import UserSchema
 bp = Blueprint('user', __name__)
 
 @bp.post('/login')

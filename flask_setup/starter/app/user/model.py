@@ -1,6 +1,6 @@
 import jwt, string, secrets, bcrypt
 from datetime import datetime
-from .. import app, db, secret
+from app import app, db, secret
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
