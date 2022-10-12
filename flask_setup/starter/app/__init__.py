@@ -12,14 +12,14 @@ ma = Marshmallow(app)
 CORS(app)
 
 
+# Celery
+from app.celery import make_celery
+celery = make_celery(app)
+
 # Database
 from config import secret
 app.secret_key = secret
 migrate = Migrate(app, db)
-
-# Celery
-from app.celery import make_celery
-celery = make_celery(app)
 
 
 # Controllers
