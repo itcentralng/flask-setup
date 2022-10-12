@@ -3,6 +3,8 @@ bcrypt==3.2.2
 Flask
 celery
 Flask-Cors
+marshmallow
+marshmallow-sqlalchemy
 flask-marshmallow
 Flask-Migrate
 Flask-SQLAlchemy
