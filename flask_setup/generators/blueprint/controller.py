@@ -1,9 +1,9 @@
 from flask import Blueprint
 
-from .model import *
-from .schema import *
+from app.__blueprint__.model import *
+from app.__blueprint__.schema import *
 bp = Blueprint('__blueprint__', __name__)
 
-@bp.post('/index')
+@bp.get('/index')
 def index():
     return '__blueprint__ Works'
