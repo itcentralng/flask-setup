@@ -19,6 +19,9 @@ with open("README.md", "r") as fh:
          'flask_setup/starter/app/user/model.py',
          'flask_setup/starter/app/user/schema.py',
          
+         'flask_setup/starter/app/celery/__init__.py',
+         'flask_setup/starter/app/celery/tasks.py',
+         
          'flask_setup/starter/app/__init__.py',
          'flask_setup/starter/app/error_handlers.py',
          'flask_setup/starter/app/route_guard.py',
@@ -26,9 +29,11 @@ with open("README.md", "r") as fh:
          'flask_setup/starter/config/__init__.py',
          'flask_setup/starter/config/db.py',
          'flask_setup/starter/config/jwt.py',
+         'flask_setup/starter/config/mail.py',
+         'flask_setup/starter/config/celery.py',
          
          'flask_setup/starter/helpers/__init__.py',
-         'flask_setup/starter/helpers/time_helper.py',
+         'flask_setup/starter/helpers/upload_helper.py',
          
          'flask_setup/starter/main.py',
          'flask_setup/starter/manage.py',
