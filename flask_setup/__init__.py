@@ -131,6 +131,10 @@ def add(name: str):
 @app.command()
 @before_command
 def remove(name: str):
+    """
+    The remove command removes a blueprint from the project:
+        it requires the name of the blueprint to be removed
+    """
     name = name.lower()
     # check if a folder with the name exists
     log = f'Blueprint {name} does not exist'
@@ -150,6 +154,58 @@ def remove(name: str):
             log = f'Blueprint {name} removed successfully'
             do_add_log(log)
     typer.echo(log)
+
+@app.command()
+@before_command
+def copy(blueprint_to_copy: str, new_blueprint_name: str):
+    """
+    The copy command copies a blueprint from the project:
+        it requires the name of the blueprint to be copied and the new name of the blueprint
+    """
+    blueprint_to_copy = blueprint_to_copy.lower()
+    new_blueprint_name = new_blueprint_name.lower()
+    # check if a folder with the name exists
+    log = f'Blueprint {blueprint_to_copy} does not exist'
+    if os.path.isdir(f'app/{blueprint_to_copy}'):
+        log = ''
+        typer.echo("Are you sure you want to copy this blueprint?")
+        if typer.confirm('y/n'):
+            # copy the blueprint
+            copytree(f'app/{blueprint_to_copy}', f'app/{new_blueprint_name}', dirs_exist_ok=True)
+            # rename the blueprint
+            with open(f'app/{new_blueprint_name}/controller.py', 'r') as f:
+                content = f.read()
+            content = content.replace(f'__blueprint__ = "{blueprint_to_copy}"', f'__blueprint__ = "{new_blueprint_name}"')
+            with open(f'app/{new_blueprint_name}/controller.py', 'w') as f:
+                f.write(content)
+            # register the blueprint to the app
+            with open("app/__init__.py", "r") as main_app:
+                # check if there is already a blueprint and add this after it
+                content = main_app.read()
+                # check if 'app.register_blueprint' is in content
+                if "app.register_blueprint" in content:
+                    # find the last blueprint
+                    last_blueprint = content.rfind(".register_blueprint")
+                    # find the immediate line after the last blueprint
+                    next_line = content.find("\n", last_blueprint)
+                    # add the new blueprint after the last blueprint
+                    content = content[:next_line] + f"\nfrom app.{new_blueprint_name}.controller import bp as {new_blueprint_name}_bp\napp.register_blueprint({new_blueprint_name}_bp)" + content[next_line:]
+                elif "Register controllers" in content:
+                    # find the last blueprint
+                    last_blueprint = content.rfind("Register controllers")
+                    # find the immediate line after the last blueprint
+                    next_line = content.find("\n", last_blueprint)
+                    # add the new blueprint after the last blueprint
+                    content = content[:next_line] + f"\nfrom app.{new_blueprint_name}.controller import bp as {new_blueprint_name}_bp\napp.register_blueprint({new_blueprint_name}_bp)" + content[next_line:]
+                else:
+                    # add the new blueprint
+                    content = content.replace("migrate = Migrate(app, db)", f"migrate = Migrate(app, db)\n\n\nfrom app.{new_blueprint_name}.controller import bp as {new_blueprint_name}_bp\napp.register_blueprint({new_blueprint_name}_bp)\n")
+                with open(f"app/__init__.py", "w") as main_app:
+                    main_app.write(content)
+            log = f'Blueprint {blueprint_to_copy} copied successfully'
+            do_add_log(log)
+    typer.echo(log)
+    
 
 def run():
     app()
