@@ -202,10 +202,34 @@ def copy(blueprint_to_copy: str, new_blueprint_name: str):
                     content = content.replace("migrate = Migrate(app, db)", f"migrate = Migrate(app, db)\n\n\nfrom app.{new_blueprint_name}.controller import bp as {new_blueprint_name}_bp\napp.register_blueprint({new_blueprint_name}_bp)\n")
                 with open(f"app/__init__.py", "w") as main_app:
                     main_app.write(content)
+                # Read the content of the controller file and replace the blueprint name
+                with open(f'app/{new_blueprint_name}/controller.py', 'r') as f:
+                    content = f.read()
+                content = content.replace(blueprint_to_copy, new_blueprint_name)
+                content = content.replace(blueprint_to_copy.title(), new_blueprint_name.title())
+                content = content.replace(blueprint_to_copy.upper(), new_blueprint_name.upper())
+                with open(f'app/{new_blueprint_name}/controller.py', 'w') as f:
+                    f.write(content)
+                # Read the content of the model file and replace the blueprint name
+                with open(f'app/{new_blueprint_name}/model.py', 'r') as f:
+                    content = f.read()
+                content = content.replace(blueprint_to_copy, new_blueprint_name)
+                content = content.replace(blueprint_to_copy.title(), new_blueprint_name.title())
+                content = content.replace(blueprint_to_copy.upper(), new_blueprint_name.upper())
+                with open(f'app/{new_blueprint_name}/model.py', 'w') as f:
+                    f.write(content)
+                # Read the content of the schema file and replace the blueprint name
+                with open(f'app/{new_blueprint_name}/schema.py', 'r') as f:
+                    content = f.read()
+                content = content.replace(blueprint_to_copy, new_blueprint_name)
+                content = content.replace(blueprint_to_copy.title(), new_blueprint_name.title())
+                content = content.replace(blueprint_to_copy.upper(), new_blueprint_name.upper())
+                with open(f'app/{new_blueprint_name}/schema.py', 'w') as f:
+                    f.write(content)
             log = f'Blueprint {blueprint_to_copy} copied successfully'
             do_add_log(log)
     typer.echo(log)
-    
+
 
 def run():
     app()
