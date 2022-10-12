@@ -42,6 +42,7 @@ with open("README.md", "r") as fh:
          'flask_setup/starter/supervisord.conf',
          'flask_setup/starter/requirements.txt',
          'flask_setup/starter/run',
+         'flask_setup/starter/.env',
 
          ]),
       ('generators', [
