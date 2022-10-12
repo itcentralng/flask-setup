@@ -1,8 +1,9 @@
 import os
+import typer
 from flask_setup.methods import do_add_log, do_freeze
 from shutil import copytree
 
-def run_build_command(typer, project):
+def run_build_command(project, path):
     if os.path.exists(project):
             typer.echo("Project already exists")
             return
@@ -13,7 +14,6 @@ def run_build_command(typer, project):
     os.chdir(project)
     do_add_log("Project folder created")
 
-    path = os.path.dirname(os.path.realpath(__file__))
     # copy relevant app files to project directory
     copytree(f'{path}/starter', '.', dirs_exist_ok=True)
     
