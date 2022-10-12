@@ -1,3 +1,3 @@
-from .. import ma
-from .model import *
+from app import ma
+from app.__blueprint__.model import *
 
