@@ -11,7 +11,7 @@ def run_start_command():
     while is_not_running:
         try:
             is_not_running = False
-            os.system('export FLASK_APP=main && flask run --debug -p ' + str(port))
+            os.system('flask --app main --debug run -p ' + str(port))
         except:
             is_not_running = True
             port = randint(4999, 6000)
