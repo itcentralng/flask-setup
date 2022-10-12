@@ -18,10 +18,7 @@ def init():
 
 @app.command()
 @new_project_command
-def build(project: str = ''):
-
-    while project == '':
-        project = input('Enter project name: ')
+def build(project: str):
 
     if os.path.exists(project):
         typer.echo("Project already exists")
