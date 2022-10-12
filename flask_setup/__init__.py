@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 from shutil import copytree
+from flask_setup.commands.build import run_build_command
 import typer
 
 from flask_setup.decorators import before_command, new_project_command
@@ -19,33 +20,8 @@ def init():
 @app.command()
 @new_project_command
 def build(project: str):
-
-    if os.path.exists(project):
-        typer.echo("Project already exists")
-        return
+    return run_build_command(typer, project)
     
-    # Create project folder
-    os.mkdir(project)
-    # move to project folder
-    os.chdir(project)
-    do_add_log("Project folder created")
-
-    path = os.path.dirname(os.path.realpath(__file__))
-    # copy relevant app files to project directory
-    copytree(f'{path}/starter', '.', dirs_exist_ok=True)
-    
-    # create virtual environment
-    os.system('python3 -m venv venv') if os.name == 'posix' else os.system('py -m venv venv')
-
-    # upgrade pip
-    os.system('venv/bin/pip install --upgrade pip') if os.name == 'posix' else os.system('venv\\Scripts\\pip install --upgrade pip')
-
-    # install requirements into the virtual environment
-    os.system('venv/bin/pip install -r requirements.txt') if os.name == 'posix' else os.system('venv\Scripts\pip install -r requirements.txt')
-
-    log = 'Project built successfully'
-    do_add_log(log)
-    typer.echo(log)
 
 @app.command()
 @before_command
