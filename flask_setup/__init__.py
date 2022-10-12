@@ -54,13 +54,16 @@ def destroy():
 
 @app.command()
 @before_command
-def install(package: str):
-    if package == 'all':
+def install(*packages):
+    """
+    Install packages
+    """
+    if 'all' in packages:
         os.system('pip install -r requirements.txt')
         log = 'All packages installed successfully'
     else:
-        log = f'Package: {package} installed successfully'
-        os.system(f'pip install {package}')
+        os.system(f'pip install {" ".join(packages)}')
+        log = f"Installed packages: {', '.join(packages)}"
     do_freeze()
     typer.echo(log)
     do_add_log(log)
