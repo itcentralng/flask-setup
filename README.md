@@ -34,3 +34,6 @@ Flask Setup Tool
 
 8.  init: Initializes fs on an existing project with similar setup e.g.:
     `$ fs init` this will create a .fs file in the root directory of the project
+
+9. start: Starts the server e.g.:
+    `$ fs start` this will start the server

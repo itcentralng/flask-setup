@@ -27,7 +27,7 @@ def init():
 @new_project_command
 def build(project: str):
     path = os.path.dirname(os.path.realpath(__file__))
-    return run_build_command(typer, project, path)
+    return run_build_command(project, path)
     
 
 @app.command()

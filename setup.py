@@ -3,11 +3,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
     setup(
      name='flask_setup',  
-     version='0.5.0',
+     version='0.5.1',
      scripts=['fs'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",
-     description="A simple tool to help you setup a flask project for web development, API development and just any basic app",
+     description="A simple tool to help you setup a flask project quickly",
      long_description=long_description,
      long_description_content_type="text/markdown",
      url="https://github.com/mrteey/flask-setup",
