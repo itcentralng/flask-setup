@@ -29,9 +29,9 @@ def build(project: str = ''):
     
     # Create project folder
     os.mkdir(project)
-    do_add_log("Project folder created")
     # move to project folder
     os.chdir(project)
+    do_add_log("Project folder created")
 
     path = os.path.dirname(os.path.realpath(__file__))
     # copy relevant app files to project directory
