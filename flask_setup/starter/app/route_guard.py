@@ -19,10 +19,10 @@ def auth_required(*roles_required):
                 token = auth_header.split(' ')[1]
                 payload = jwt.decode(token, app.config.get('JWT_SECRET_KEY'), algorithms=["HS256"])
                 auth_id = payload['sub']
-                roles = payload['roles']
+                role = payload['role']
                 # check role
                 if roles_required:
-                    if not any(role in roles for role in roles_required):
+                    if role not in roles_required:
                         return jsonify({"message": "Unauthorized to perform action"}), 401
             except ExpiredSignatureError:
                 return jsonify({"message": "Expired or Invalid Token"}), 401
