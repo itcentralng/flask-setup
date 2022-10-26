@@ -9,19 +9,19 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     role = db.Column(db.String, nullable=True)
-
-    @classmethod
-    def get_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
     
     def save(self):
-        try:
-            db.session.add(self)
-            db.session.commit()
-            return True
-        except:
-            return False
-
+        db.session.add(self)
+        db.session.commit()
+    
+    def update(self):
+        self.updated_at = db.func.now()
+        db.session.commit()
+    
+    def generate_password(self):
+        alphabet = string.ascii_letters + string.digits
+        password = ''.join(secrets.choice(alphabet) for i in range(10))
+        return password
     
     def hash_password(self):
         self.password = bcrypt.hashpw(self.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -38,29 +38,30 @@ class User(db.Model):
         }
         return jwt.encode(payload, secret, algorithm='HS256')
     
-    def generate_password(self):
-        """
-        It generates a random password of length 10 using the string module and the secrets module
-        :return: A string of 10 characters, with each character being randomly selected from the alphabet.
-        """
-        alphabet = string.ascii_letters + string.digits
-        password = ''.join(secrets.choice(alphabet) for i in range(10))
-        return password
-    
     def update_password(self, old_password, new_password):
         if self.is_verified(old_password):
             self.password = new_password
             self.hash_password()
-            return self.update()
+            self.update()
+            return True
         return False
     
-    def update(self):
-        try:
-            db.session.commit()
-            return True
-        except:
-            return False
+    def reset_password(self, new_password):
+        self.password = new_password
+        self.hash_password()
+        self.update()
+    
+    @classmethod
+    def get_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
     
     @classmethod
     def get_by_email(self, email):
-        return User.query.filter(User.email).first()
+        return User.query.filter(User.email==email).first()
+    
+    @classmethod
+    def create(cls, email, password, role):
+        user = cls(email=email, password=password, role=role)
+        user.hash_password()
+        user.save()
+        return user
