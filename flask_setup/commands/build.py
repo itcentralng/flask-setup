@@ -1,6 +1,6 @@
 import os
 import typer
-from flask_setup.methods import do_add_log, do_freeze
+from flask_setup.methods import do_add_log
 from shutil import copytree
 
 def run_build_command(project, path):

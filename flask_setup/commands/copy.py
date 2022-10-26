@@ -1,7 +1,7 @@
 import os
 import typer
 from shutil import copytree
-from flask_setup.methods import do_add_log, do_freeze
+from flask_setup.methods import do_add_log
 
 
 def run_copy_command(blueprint_to_copy, new_blueprint_name, existing_blueprint):
