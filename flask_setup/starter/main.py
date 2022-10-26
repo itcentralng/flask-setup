@@ -5,7 +5,7 @@ from app import app
 
 @app.route("/")
 def index():
-    return {'name':"flask-setup app", 'version':"0.0.1", 'status':"OK"}
+    return {'name':"__project__", 'version':"0.0.1", 'status':"OK"}
 
 @app.route('/health')
 def health():
