@@ -18,10 +18,10 @@ def run_build_command(project, path):
     copytree(f'{path}/starter', '.', dirs_exist_ok=True)
     
     # rename __project__ in app/main.py
-    with open("app/main.py", "r") as main_app:
+    with open("main.py", "r") as main_app:
         content = main_app.read()
         content = content.replace("__project__", project)
-        with open("app/main.py", "w") as main_app:
+        with open("main.py", "w") as main_app:
             main_app.write(content)
     # create virtual environment
     os.system('python3 -m venv venv') if os.name == 'posix' else os.system('py -m venv venv')
