@@ -1,7 +1,7 @@
 import os
 import typer
 from shutil import copytree
-from flask_setup.methods import do_add_log, do_freeze
+from flask_setup.methods import do_add_log
 
 
 def run_add_command(path, name, existing_blueprint):
@@ -10,10 +10,23 @@ def run_add_command(path, name, existing_blueprint):
     if not existing_blueprint:
         copytree(f'{path}/generators/blueprint', f'app/{name}', dirs_exist_ok=True)
         # rename sample blueprint to name
+        # IN CONTROLLER
         with open(f'app/{name}/controller.py', 'r') as f:
             content = f.read()
         content = content.replace('__blueprint__', name)
         with open(f'app/{name}/controller.py', 'w') as f:
+            f.write(content)
+        # IN MODEL
+        with open(f'app/{name}/model.py', 'r') as f:
+            content = f.read()
+        content = content.replace('__blueprint__', name)
+        with open(f'app/{name}/model.py', 'w') as f:
+            f.write(content)
+        # IN SCHEMA
+        with open(f'app/{name}/schema.py', 'r') as f:
+            content = f.read()
+        content = content.replace('__blueprint__', name)
+        with open(f'app/{name}/schema.py', 'w') as f:
             f.write(content)
         # register the blueprint to the app
         with open("app/__init__.py", "r") as main_app:
