@@ -29,6 +29,6 @@ class __Blueprint__(db.Model):
     
     @classmethod
     def create(cls):
-        agent = cls()
-        agent.save()
-        return agent
+        __blueprint__ = cls()
+        __blueprint__.save()
+        return __blueprint__
