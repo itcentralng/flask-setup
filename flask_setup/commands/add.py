@@ -13,19 +13,19 @@ def run_add_command(path, name, existing_blueprint):
         # IN CONTROLLER
         with open(f'app/{name}/controller.py', 'r') as f:
             content = f.read()
-        content = content.replace('__blueprint__', name)
+        content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
         with open(f'app/{name}/controller.py', 'w') as f:
             f.write(content)
         # IN MODEL
         with open(f'app/{name}/model.py', 'r') as f:
             content = f.read()
-        content = content.replace('__blueprint__', name)
+        content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
         with open(f'app/{name}/model.py', 'w') as f:
             f.write(content)
         # IN SCHEMA
         with open(f'app/{name}/schema.py', 'r') as f:
             content = f.read()
-        content = content.replace('__blueprint__', name)
+        content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
         with open(f'app/{name}/schema.py', 'w') as f:
             f.write(content)
         # register the blueprint to the app
