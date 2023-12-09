@@ -47,11 +47,11 @@ def uninstall(package: str):
 
 @app.command()
 @before_command
-def add(name: str):
+def add(name: str, *args):
     name = name.lower()
     existing_blueprint = os.path.isdir(f'app/{name}')
     path = os.path.dirname(os.path.realpath(__file__))
-    return run_add_command(path, name, existing_blueprint)
+    return run_add_command(path, name, existing_blueprint, *args)
 
 @app.command()
 @before_command

@@ -4,7 +4,7 @@ from shutil import copytree
 from flask_setup.methods import do_add_log
 
 
-def run_add_command(path, name, existing_blueprint):
+def run_add_command(path, name, existing_blueprint, *args):
     # check if a folder with the name exists
     log = f'Blueprint {name} already exists'
     if not existing_blueprint:
@@ -20,6 +20,14 @@ def run_add_command(path, name, existing_blueprint):
         with open(f'app/{name}/model.py', 'r') as f:
             content = f.read()
         content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
+        # Include args if exists
+        if args:
+            model_extra_fields = "\n".join([f"{a} = db.Column(db.String)" for a in args])
+            model_args = ", ".join(args)
+            model_kwargs = ", ".join([f"{a} = {a}" for a in args])
+            content = content.replace('__additional_fields__', model_extra_fields).replace('__args__', model_args).replace('__kwargs__', model_kwargs)
+        else:
+            content = content.replace('__additional_fields__', '').replace('__args__', '').replace('__kwargs__', '')
         with open(f'app/{name}/model.py', 'w') as f:
             f.write(content)
         # IN SCHEMA

@@ -2,6 +2,7 @@ from app import db
 
 class __Blueprint__(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    __additional_fields__
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now())
     is_deleted = db.Column(db.Boolean, default=False)
@@ -28,7 +29,7 @@ class __Blueprint__(db.Model):
         return cls.query.filter_by(is_deleted=False).all()
     
     @classmethod
-    def create(cls):
-        __blueprint__ = cls()
+    def create(cls, __args__):
+        __blueprint__ = cls(__kwargs__)
         __blueprint__.save()
         return __blueprint__
