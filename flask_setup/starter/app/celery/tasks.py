@@ -2,14 +2,6 @@ from app import celery, app
 
 from celery.schedules import crontab
 
-# create a periodic task that will perform_transfer every 24 hours
-# celery.conf.beat_schedule = {
-#     'task name': {
-#         'task': 'task function to call',
-#         'schedule': crontab(hour=0, minute=0),
-#     },
-# }
-
 
 import os
 import smtplib, ssl
@@ -25,7 +17,7 @@ def send_mail(subject, text, html, recipients, attachments=[]):
     
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
-    message["From"] = f'Air Warfare Centre <{sender}>'
+    message["From"] = f'Sender Full Name <{sender}>'
     message["To"] = receiver
 
     # Turn these into plain/html MIMEText objects
