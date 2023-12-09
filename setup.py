@@ -3,7 +3,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
     setup(
      name='flask_setup',  
-     version='0.5.5',
+     version='0.5.6',
      scripts=['fs'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",
@@ -33,7 +33,6 @@ with open("README.md", "r") as fh:
          'flask_setup/starter/config/celery.py',
          
          'flask_setup/starter/helpers/__init__.py',
-         'flask_setup/starter/helpers/upload_helper.py',
          
          'flask_setup/starter/main.py',
          'flask_setup/starter/manage.py',
