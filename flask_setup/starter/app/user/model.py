@@ -38,10 +38,10 @@ class User(db.Model):
         return create_refresh_token(self.id)
     
     def generate_access_token(self):
-        return create_access_token(identity=self.id, fresh=True, additional_claims={"roles": [role.name for role in self.roles]})
+        return create_access_token(identity=self.id, fresh=True, additional_claims={"role": self.role})
     
     def generate_refreshed_access_token(self):
-        return create_access_token(identity=self.id, fresh=False, additional_claims={"roles": [role.name for role in self.roles]})
+        return create_access_token(identity=self.id, fresh=False, additional_claims={"role": self.role})
     
     def update_password(self, old_password, new_password):
         if self.is_verified(old_password):

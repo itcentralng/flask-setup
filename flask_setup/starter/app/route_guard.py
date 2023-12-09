@@ -1,4 +1,4 @@
-from flask import jsonify, request, g
+from flask import jsonify, g
 from flask_jwt_extended import verify_jwt_in_request
 from flask_jwt_extended import get_jwt
 from flask_jwt_extended import get_jwt_identity
@@ -17,7 +17,7 @@ def auth_required(*roles_required):
             claims = get_jwt()
             # check role
             if roles_required:
-                if not any(role in claims['roles'] for role in roles_required):
+                if not (claims['role'] in roles_required):
                     return jsonify({"message": "Unauthorized to perform action"}), 401
             g.user = User.get_by_id(get_jwt_identity())
             return f(*args, **kwargs)
