@@ -2,7 +2,7 @@ from datetime import timedelta
 import os
 
 
-secret = os.environ.get('SECRET_KEY')
+secret = os.environ.get('APP_SECRET')
 
 # Jwt config
 JWT_SECRET_KEY = secret
