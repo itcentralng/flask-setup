@@ -1,4 +1,5 @@
 from flask import Blueprint, g, request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.user.model import User
 from app.user.schema import UserSchema
@@ -17,8 +18,9 @@ def login():
     if not user.check_password(password):
         return {'message': 'Wrong password'}, 401
     # generate token
-    token = user.generate_token()
-    return {'token': token, 'user': UserSchema().dump(user)}, 200
+    access_token = user.generate_access_token()
+    refresh_token = user.generate_refresh_token()
+    return {"status": "success", "message": "Request processed succesfully", 'access_token': access_token, "refresh_token":refresh_token, 'user': UserSchema().dump(user)}, 200
 
 @bp.patch('/reset-password')
 @auth_required()
@@ -44,3 +46,11 @@ def register():
     if user is not None:
         return {'message': 'User created'}, 201
     return {'message': 'User not created'}, 400
+
+@bp.post('/refresh')
+@jwt_required(refresh=True)
+def refresh():
+    user = User.get_by_id(get_jwt_identity())
+    # generate token
+    access_token = user.generate_refreshed_access_token()
+    return {"status": "success", "message": "Request processed succesfully", 'access_token': access_token}, 200

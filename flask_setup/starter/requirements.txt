@@ -1,5 +1,5 @@
 flask-setup
-bcrypt==3.2.2
+Flask-JWT-Extended
 Flask
 celery
 Flask-Cors
@@ -10,6 +10,5 @@ Flask-Migrate
 Flask-SQLAlchemy
 gunicorn
 psycopg2-binary
-PyJWT==2.4.0
 python-dotenv
 requests

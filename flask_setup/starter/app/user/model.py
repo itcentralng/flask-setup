@@ -2,6 +2,11 @@ import jwt, string, secrets, bcrypt
 from datetime import datetime
 from app import app, db, secret
 
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token
+)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=True)
@@ -29,14 +34,14 @@ class User(db.Model):
     def check_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
     
-    def generate_token(self):
-        payload = {
-            'exp': app.config.get('JWT_REFRESH_TOKEN_EXPIRES'),
-            'iat': datetime.utcnow(),
-            'sub': self.id,
-            'role': self.role
-        }
-        return jwt.encode(payload, secret, algorithm='HS256')
+    def generate_refresh_token(self):
+        return create_refresh_token(self.id)
+    
+    def generate_access_token(self):
+        return create_access_token(identity=self.id, fresh=True, additional_claims={"roles": [role.name for role in self.roles]})
+    
+    def generate_refreshed_access_token(self):
+        return create_access_token(identity=self.id, fresh=False, additional_claims={"roles": [role.name for role in self.roles]})
     
     def update_password(self, old_password, new_password):
         if self.is_verified(old_password):

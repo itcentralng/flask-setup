@@ -1,7 +1,8 @@
 from flask import jsonify, request, g
-from app import app
-import jwt
-from jwt import DecodeError, ExpiredSignatureError, InvalidSignatureError
+from flask_jwt_extended import verify_jwt_in_request
+from flask_jwt_extended import get_jwt
+from flask_jwt_extended import get_jwt_identity
+
 
 from functools import wraps
 
@@ -12,27 +13,21 @@ def auth_required(*roles_required):
     def requires_auth(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            auth_header = request.headers.get('Authorization')
-            if not auth_header:
-                return jsonify({"message": "Missing Authorization Header"}), 401
-            try:
-                token = auth_header.split(' ')[1]
-                payload = jwt.decode(token, app.config.get('JWT_SECRET_KEY'), algorithms=["HS256"])
-                auth_id = payload['sub']
-                role = payload['role']
-                # check role
-                if roles_required:
-                    if role not in roles_required:
-                        return jsonify({"message": "Unauthorized to perform action"}), 401
-            except ExpiredSignatureError:
-                return jsonify({"message": "Expired or Invalid Token"}), 401
-            except InvalidSignatureError:
-                return jsonify({"message": "Invalid Token"}), 401
-            except DecodeError:
-                return jsonify({"message": "Malformed Token"}), 401
-            except Exception as e:
-                return jsonify({"message": "Unknown Error"}), 401
-            g.user = User.get_by_id(auth_id)
+            verify_jwt_in_request()
+            claims = get_jwt()
+            # check role
+            if roles_required:
+                if not any(role in claims['roles'] for role in roles_required):
+                    return jsonify({"message": "Unauthorized to perform action"}), 401
+            g.user = User.get_by_id(get_jwt_identity())
             return f(*args, **kwargs)
         return decorated
     return requires_auth
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        verify_jwt_in_request()
+        g.user = User.get_by_id(get_jwt_identity())
+        return f(*args, **kwargs)
+    return decorated
