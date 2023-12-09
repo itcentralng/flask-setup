@@ -1,5 +1,6 @@
 flask-setup
 Flask-JWT-Extended
+bcrypt
 Flask
 celery
 Flask-Cors
