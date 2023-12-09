@@ -2,7 +2,7 @@ import datetime
 import os
 
 
-secret = os.urandom(24)
+secret = os.getenv('APP_SECRET')
 
 # Jwt config
 JWT_SECRET_KEY = secret
