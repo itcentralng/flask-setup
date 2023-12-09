@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from app.route_guard import auth_required
 
 from app.__blueprint__.model import *
