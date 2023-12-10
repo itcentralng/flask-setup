@@ -5,6 +5,14 @@ from flask_setup.methods import do_add_log
 
 
 def run_add_command(path, name, existing_blueprint, fields):
+    model_field_types = {
+        "str":"String",
+        "int":"Integer",
+        "date":"Datetime",
+        "float":"Float"
+    }
+    model_fields = [f.lower() for f in fields]
+    fields = [f.split(':')[0].lower() for f in fields]
     # check if a folder with the name exists
     log = f'Blueprint {name} already exists'
     if not existing_blueprint:
@@ -29,7 +37,7 @@ def run_add_command(path, name, existing_blueprint, fields):
         content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
         if fields:
             # INCLUDE fields IN MODEL
-            model_extra_fields = "\n    ".join([f"{a} = db.Column(db.String)" for a in fields])
+            model_extra_fields = "\n    ".join([f"{a.split(':')[0]} = db.Column(db.{model_field_types.get(a.split(':')[-1], 'str')})" for a in model_fields])
             model_args = ", ".join(fields)
             model_kwargs = ", ".join([f"{a}={a}" for a in fields])
             model_optional_kwargs = ", ".join([f"{a}=None" for a in fields])
