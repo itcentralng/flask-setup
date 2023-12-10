@@ -21,13 +21,16 @@ app = typer.Typer()
 @new_project_command
 def init():
     """
-    Initialize .fs
+    run `fs init` => This create a .fs file in the current directory
     """
     do_add_log(".fs file created")
 
 @app.command()
 @new_project_command
 def build(project: str):
+    """
+    run `fs build project` => This create a new directory `project` and build your app in it.
+    """
     path = os.path.dirname(os.path.realpath(__file__))
     return run_build_command(project, path)
     
@@ -35,21 +38,36 @@ def build(project: str):
 @app.command()
 @before_command
 def destroy():
+    """
+    run `fs destroy` => This remove all files and folders from the current project.
+    """
     return run_destroy_command()
 
 @app.command()
 @before_command
 def install(package):
+    """
+    run `fs install package` => This uses pip in the backgroun to install and freeze `package`
+    """
     return run_install_command(package)
 
 @app.command()
 @before_command
 def uninstall(package: str):
+    """
+    run `fs uninstall package` => This uses pip in the background to uninstall and freeze `package`.
+    """
     return run_uninstall_command(package)
 
 @app.command()
 @before_command
 def add(name: str, fields: List[str]):
+    """
+    run `fs add module ...fields` => This create a new module with the defined fields. 
+
+    e.g. fs add game name description => This then creates a new module in your app with
+    model that contains the defined fields `name` and `description`.
+    """
     name = name.lower()
     existing_blueprint = os.path.isdir(f'app/{name}')
     path = os.path.dirname(os.path.realpath(__file__))
@@ -59,8 +77,7 @@ def add(name: str, fields: List[str]):
 @before_command
 def remove(name: str):
     """
-    The remove command removes a blueprint from the project:
-        it requires the name of the blueprint to be removed
+    run `fs remove module` => The remove command removes a module from the project:
     """
     name = name.lower()
     existing_blueprint = os.path.isdir(f'app/{name}')
@@ -70,7 +87,7 @@ def remove(name: str):
 @before_command
 def copy(blueprint_to_copy: str, new_blueprint_name: str):
     """
-    The copy command copies a blueprint from the project:
+    run `fs copy existing new` => The copy command copies a blueprint from the project:
         it requires the name of the blueprint to be copied and the new name of the blueprint
     """
     blueprint_to_copy = blueprint_to_copy.lower()
@@ -81,6 +98,9 @@ def copy(blueprint_to_copy: str, new_blueprint_name: str):
 @app.command()
 @before_command
 def start():
+    """
+    run `fs start` => This runs the project.
+    """
     return run_start_command()
 
 
