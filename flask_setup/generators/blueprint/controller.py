@@ -21,7 +21,7 @@ def get___blueprint__(id):
         return {'message': '__Blueprint__ not found'}, 404
     return __Blueprint__Schema().dump(__blueprint__), 200
 
-@bp.patch('/__blueprint__/<int:id>')
+@bp.put('/__blueprint__/<int:id>')
 @auth_required()
 def update___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
