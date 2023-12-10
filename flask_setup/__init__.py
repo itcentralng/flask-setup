@@ -13,10 +13,6 @@ import typer
 from flask_setup.decorators import before_command, new_project_command
 from flask_setup.methods import do_add_log
 
-
-from typing import Optional
-from typing_extensions import Annotated
-
 app = typer.Typer()
 
 @app.command()
@@ -51,11 +47,11 @@ def uninstall(package: str):
 
 @app.command()
 @before_command
-def add(name: str, *args: Annotated[Optional[str], typer.Argument()]):
+def add(name: str, fields: typer.Argument(None) = None):
     name = name.lower()
     existing_blueprint = os.path.isdir(f'app/{name}')
     path = os.path.dirname(os.path.realpath(__file__))
-    return run_add_command(path, name, existing_blueprint, *args)
+    return run_add_command(path, name, existing_blueprint, fields)
 
 @app.command()
 @before_command
