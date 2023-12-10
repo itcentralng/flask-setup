@@ -37,7 +37,7 @@ def run_add_command(path, name, existing_blueprint, fields):
         content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
         if fields:
             # INCLUDE fields IN MODEL
-            model_extra_fields = "\n    ".join([f"{a.split(':')[0]} = db.Column(db.{model_field_types.get(a.split(':')[-1], 'str')})" for a in model_fields])
+            model_extra_fields = "\n    ".join([f"{a.split(':')[0]} = db.Column(db.{model_field_types.get(a.split(':')[-1], 'String')})" for a in model_fields])
             model_args = ", ".join(fields)
             model_kwargs = ", ".join([f"{a}={a}" for a in fields])
             model_optional_kwargs = ", ".join([f"{a}=None" for a in fields])
