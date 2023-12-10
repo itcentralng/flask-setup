@@ -33,7 +33,7 @@ def run_add_command(path, name, existing_blueprint, fields):
             model_args = ", ".join(fields)
             model_kwargs = ", ".join([f"{a}={a}" for a in fields])
             model_optional_kwargs = ", ".join([f"{a}=None" for a in fields])
-            model_list_optional_kwargs = "\n    ".join([f"{a} = {a} or self.{a}" for a in fields])
+            model_list_optional_kwargs = "\n        ".join([f"{a} = {a} or self.{a}" for a in fields])
             content = content.replace('__additional_fields__', model_extra_fields).replace('__args__', model_args).replace('__kwargs__', model_kwargs).replace('__optional_kwargs__', model_optional_kwargs).replace('__list_optional_kwargs__', model_list_optional_kwargs)
         else:
             content = content.replace('__additional_fields__', '').replace('__args__', '').replace('__kwargs__', '').replace('__optional_kwargs__', '').replace('__list_optional_kwargs__', '')
