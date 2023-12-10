@@ -15,7 +15,7 @@ Flask Setup Tool
     `$ fs build projectname`
 
 2. add: Takes blueprint name e.g.
-    `$ fs add api` this will add a blueprint with the name 'api'
+    `$ fs add api ..fields` this will add a blueprint with the name 'api' and given model fields
 
 3. remove: Takes blueprint name e.g.
     `$ fs remove api` this will remove the blueprint with the name 'api'
