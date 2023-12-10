@@ -8,7 +8,9 @@ from flask_setup.commands.install import run_install_command
 from flask_setup.commands.remove import run_remove_command
 from flask_setup.commands.start import run_start_command
 from flask_setup.commands.uninstall import run_uninstall_command
+
 import typer
+from typing import List
 
 from flask_setup.decorators import before_command, new_project_command
 from flask_setup.methods import do_add_log
@@ -47,7 +49,7 @@ def uninstall(package: str):
 
 @app.command()
 @before_command
-def add(name: str, fields: typer.Argument(None) = None):
+def add(name: str, fields: List[str] = []):
     name = name.lower()
     existing_blueprint = os.path.isdir(f'app/{name}')
     path = os.path.dirname(os.path.realpath(__file__))
