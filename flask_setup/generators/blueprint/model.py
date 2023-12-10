@@ -11,7 +11,8 @@ class __Blueprint__(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def update(self):
+    def update(self, __optional_kwargs__):
+        __list_optional_kwargs__
         self.updated_at = db.func.now()
         db.session.commit()
     

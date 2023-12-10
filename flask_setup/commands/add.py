@@ -14,20 +14,29 @@ def run_add_command(path, name, existing_blueprint, fields):
         with open(f'app/{name}/controller.py', 'r') as f:
             content = f.read()
         content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
+        if fields:
+            # INCLUDE fields IN CONTROLLER
+            request_fields = "\n    ".join([f"{a} = request.json.get('{a}')" for a in fields])
+            request_args = ", ".join(fields)
+            content = content.replace('__request_fields__', request_fields).replace('__args__', request_args)
+        else:
+            content = content.replace('__request_fields__', '').replace('__args__', '')
         with open(f'app/{name}/controller.py', 'w') as f:
             f.write(content)
         # IN MODEL
         with open(f'app/{name}/model.py', 'r') as f:
             content = f.read()
         content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
-        # Include args if exists
         if fields:
-            model_extra_fields = "\n".join([f"{a} = db.Column(db.String)" for a in fields])
+            # INCLUDE fields IN MODEL
+            model_extra_fields = "\n    ".join([f"{a} = db.Column(db.String)" for a in fields])
             model_args = ", ".join(fields)
-            model_kwargs = ", ".join([f"{a} = {a}" for a in fields])
-            content = content.replace('__additional_fields__', model_extra_fields).replace('__args__', model_args).replace('__kwargs__', model_kwargs)
+            model_kwargs = ", ".join([f"{a}={a}" for a in fields])
+            model_optional_kwargs = ", ".join([f"{a}=None" for a in fields])
+            model_list_optional_kwargs = "\n    ".join([f"{a} = {a} or self.{a}" for a in fields])
+            content = content.replace('__additional_fields__', model_extra_fields).replace('__args__', model_args).replace('__kwargs__', model_kwargs).replace('__optional_kwargs__', model_optional_kwargs).replace('__list_optional_kwargs__', model_list_optional_kwargs)
         else:
-            content = content.replace('__additional_fields__', '').replace('__args__', '').replace('__kwargs__', '')
+            content = content.replace('__additional_fields__', '').replace('__args__', '').replace('__kwargs__', '').replace('__optional_kwargs__', '').replace('__list_optional_kwargs__', '')
         with open(f'app/{name}/model.py', 'w') as f:
             f.write(content)
         # IN SCHEMA

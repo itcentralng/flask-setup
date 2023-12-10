@@ -9,7 +9,8 @@ bp = Blueprint('__blueprint__', __name__)
 @bp.post('/__blueprint__')
 @auth_required()
 def create___blueprint__():
-    __blueprint__ = __Blueprint__.create()
+    __request_fields__
+    __blueprint__ = __Blueprint__.create(__args__)
     return __Blueprint__Schema().dump(__blueprint__), 201
 
 @bp.get('/__blueprint__/<int:id>')
@@ -26,7 +27,8 @@ def update___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
     if __blueprint__ is None:
         return {'message': '__Blueprint__ not found'}, 404
-    __blueprint__.update()
+    __request_fields__
+    __blueprint__.update(__args__)
     return __Blueprint__Schema().dump(__blueprint__), 200
 
 @bp.delete('/__blueprint__/<int:id>')
