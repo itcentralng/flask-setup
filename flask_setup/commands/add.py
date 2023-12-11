@@ -8,8 +8,9 @@ def run_add_command(path, name, existing_blueprint, fields):
     model_field_types = {
         "str":"String",
         "int":"Integer",
-        "date":"Datetime",
-        "float":"Float"
+        "date":"DateTime",
+        "float":"Float",
+        "bool":"Boolean"
     }
     model_fields = [f.lower() for f in fields]
     fields = [f.split(':')[0].lower() for f in fields]
