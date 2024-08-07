@@ -45,11 +45,7 @@ def write_log_file(project, name, email):
         "project":project,
         "author":name,
         "email":email,
-        "config":{
-            "python":"3.10",
-            "pip":"24.10",
-            "fs":"0.6.1"
-            },
+        "config":{},
         "packages":[],
         "modules":[]
         }
@@ -59,3 +55,30 @@ def write_log_file(project, name, email):
             json.dump(content, file, ensure_ascii=False, indent=4)
     except Exception as e:
         raise Exception('.fs file is missing or damaged.')
+
+def write_config(python_version, pip_version, fs_version):
+    config = {
+        "python":python_version,
+        "pip":pip_version,
+        "fs":fs_version
+        }
+    
+    logs = read_logs()
+
+    logs['config'] = config
+
+    write_logs(logs)
+
+def set_project():
+    project, author_name, author_email = None, None, None
+
+    while not project:
+        project = input("Enter name of project:\n")
+    
+    while not author_name:
+        author_name = input("Enter your name:\n")
+    
+    while not author_email:
+        author_email = input("Enter your email:\n")
+
+    return project, author_name, author_email

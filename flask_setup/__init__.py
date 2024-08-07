@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import os
 from flask_setup.commands.add import run_add_command
-from flask_setup.commands.build import run_build_command
+from flask_setup.commands.build import run_build_command, run_init_command
 from flask_setup.commands.copy import run_copy_command
-from flask_setup.commands.destroy import run_destroy_command
 from flask_setup.commands.install import run_install_command
 from flask_setup.commands.remove import run_remove_command
 from flask_setup.commands.start import run_start_command
@@ -13,7 +12,7 @@ import typer
 from typing import List
 
 from flask_setup.decorators import before_command, new_project_command
-from flask_setup.methods import do_add_log
+from flask_setup.methods import do_add_log, set_project
 
 app = typer.Typer()
 
@@ -23,8 +22,8 @@ def init():
     """
     run `fs init` => This create a .fs file in the current directory
     """
-    pass
-    # do_add_log(".fs file created")
+    project, author_name, author_email = set_project()
+    run_init_command(project, author_name, author_email)
 
 @app.command()
 @new_project_command
@@ -33,19 +32,9 @@ def build():
     run `fs build project` => This create a new directory `project` and build your app in it.
     """
     path = os.path.dirname(os.path.realpath(__file__))
-    project = input("What's your project name?\n")
-    name = input("What's your name?\n")
-    email = input("What's your email?\n")
-    return run_build_command(project, name, email, path)
+    project, author_name, author_email = set_project()
+    return run_build_command(project, author_name, author_email, path)
     
-
-@app.command()
-@before_command
-def destroy():
-    """
-    run `fs destroy` => This remove all files and folders from the current project.
-    """
-    return run_destroy_command()
 
 @app.command()
 @before_command

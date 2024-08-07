@@ -1,7 +1,7 @@
 import os
 import typer
-from flask_setup.commands.install import install_defaults
-from flask_setup.methods import do_add_log, write_log_file
+from flask_setup.commands.install import install_defaults, manage_dependencies
+from flask_setup.methods import do_add_log, write_config, write_log_file
 from shutil import copytree
 
 def run_build_command(project, name, email, path):
@@ -30,13 +30,16 @@ def run_build_command(project, name, email, path):
     # upgrade pip
     os.system('venv/bin/pip install --upgrade pip') if os.name == 'posix' else os.system('venv\\Scripts\\pip install --upgrade pip')
 
-    # install requirements into the virtual environment
-    # os.system('venv/bin/pip install -r requirements.txt') if os.name == 'posix' else os.system('venv\Scripts\pip install -r requirements.txt')
-
     write_log_file(project, name, email)
 
     install_defaults()
 
-    log = 'Project built successfully'
-    # do_add_log(log)
-    typer.echo(log)
+    typer.echo('Project built successfully')
+
+def run_init_command(project, name, email):
+
+    write_log_file(project, name, email)
+
+    manage_dependencies()
+
+    typer.echo('fs initialized successfully')
