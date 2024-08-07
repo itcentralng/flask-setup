@@ -1,9 +1,10 @@
 import os
 import typer
-from flask_setup.methods import do_add_log
+from flask_setup.commands.install import install_defaults
+from flask_setup.methods import do_add_log, write_log_file
 from shutil import copytree
 
-def run_build_command(project, path):
+def run_build_command(project, name, email, path):
     if os.path.exists(project):
             typer.echo("Project already exists")
             return
@@ -12,7 +13,7 @@ def run_build_command(project, path):
     os.mkdir(project)
     # move to project folder
     os.chdir(project)
-    do_add_log("Project folder created")
+    # do_add_log("Project folder created")
 
     # copy relevant app files to project directory
     copytree(f'{path}/starter', '.', dirs_exist_ok=True)
@@ -30,8 +31,12 @@ def run_build_command(project, path):
     os.system('venv/bin/pip install --upgrade pip') if os.name == 'posix' else os.system('venv\\Scripts\\pip install --upgrade pip')
 
     # install requirements into the virtual environment
-    os.system('venv/bin/pip install -r requirements.txt') if os.name == 'posix' else os.system('venv\Scripts\pip install -r requirements.txt')
+    # os.system('venv/bin/pip install -r requirements.txt') if os.name == 'posix' else os.system('venv\Scripts\pip install -r requirements.txt')
+
+    write_log_file(project, name, email)
+
+    install_defaults()
 
     log = 'Project built successfully'
-    do_add_log(log)
+    # do_add_log(log)
     typer.echo(log)

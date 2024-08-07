@@ -1,0 +1,14 @@
+{
+    "project":"",
+    "author":"",
+    "email":"",
+    "config":{
+        "python":"3.10",
+        "pip":"24.10",
+        "fs":"0.6.1"
+    },
+    "packages":[
+    ],
+    "modules":[
+    ]
+}

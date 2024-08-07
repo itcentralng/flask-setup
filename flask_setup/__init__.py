@@ -23,16 +23,20 @@ def init():
     """
     run `fs init` => This create a .fs file in the current directory
     """
-    do_add_log(".fs file created")
+    pass
+    # do_add_log(".fs file created")
 
 @app.command()
 @new_project_command
-def build(project: str):
+def build():
     """
     run `fs build project` => This create a new directory `project` and build your app in it.
     """
     path = os.path.dirname(os.path.realpath(__file__))
-    return run_build_command(project, path)
+    project = input("What's your project name?\n")
+    name = input("What's your name?\n")
+    email = input("What's your email?\n")
+    return run_build_command(project, name, email, path)
     
 
 @app.command()
@@ -45,11 +49,11 @@ def destroy():
 
 @app.command()
 @before_command
-def install(package):
+def install(packages: List[str]):
     """
     run `fs install package` => This uses pip in the backgroun to install and freeze `package`
     """
-    return run_install_command(package)
+    return run_install_command(packages)
 
 @app.command()
 @before_command
