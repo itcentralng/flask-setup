@@ -8,10 +8,10 @@ bp = Blueprint('user', __name__)
 
 @bp.post('/login')
 def login():
-    email = request.json.get('email')
+    username = request.json.get('username')
     password = request.json.get('password')
     
-    user = User.get_by_email(email)
+    user = User.get_by_username(username)
     
     if user is None:
         return {'message': 'User not found'}, 404
@@ -20,7 +20,7 @@ def login():
     # generate token
     access_token = user.generate_access_token()
     refresh_token = user.generate_refresh_token()
-    return {"status": "success", "message": "Request processed succesfully", 'access_token': access_token, "refresh_token":refresh_token, 'user': UserSchema().dump(user)}, 200
+    return {"status": "success", "message": "Request processed succesfully", 'access_token': access_token, "refresh_token":refresh_token, 'data': UserSchema().dump(user)}, 200
 
 @bp.patch('/reset-password')
 @auth_required()
@@ -31,21 +31,20 @@ def reset_password():
     elif len(new_password) < 6:
         return {'message': 'Password must be at least 6 characters'}, 400
     g.user.reset_password(new_password)
-    return {'message': 'Password updated successfully'}, 200
-    
+    return {'message': 'Password updated successfully', 'status':'success'}, 200
 
 @bp.post('/register')
 def register():
-    email = request.json.get('email')
+    username = request.json.get('username')
     password = request.json.get('password')
     role = request.json.get('role')
-    user = User.get_by_email(email)
+    user = User.get_by_username(username)
     if user is not None:
-        return {'message': 'User already exists'}, 400
-    user = User.create(email, password, role)
+        return {'message': 'User already exists', 'status':'failed'}, 400
+    user = User.create(username, password, role)
     if user is not None:
-        return {'message': 'User created'}, 201
-    return {'message': 'User not created'}, 400
+        return {'message': 'User created successfully', 'status':'success'}, 201
+    return {'message': 'User not created successfully', 'status':'failed'}, 400
 
 @bp.post('/refresh')
 @jwt_required(refresh=True)
