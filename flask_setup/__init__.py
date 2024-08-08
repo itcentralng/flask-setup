@@ -40,7 +40,7 @@ def build():
 @before_command
 def install(packages: List[str]):
     """
-    run `fs install package` => This uses pip in the backgroun to install and freeze `package`
+    run `fs install package` => This uses pip in the background to install `package`. Packages can be passed as space separated.
     """
     return run_install_command(packages)
 

@@ -1,18 +1,18 @@
 import os
 import platform
 import subprocess
-import typer
+from typing import List
 from flask_setup.methods import do_add_log, do_freeze, read_logs, write_config
 
 LOG_TYPE = 'packages'
 
 PIP = 'venv/bin/pip' if os.name == 'posix' else 'venv\Scripts\pip'
 
-def run_install_command(packages: list[str]):
+def run_install_command(packages: List[str]):
     """
     Install packages
     """
-    if packages == 'all':
+    if packages == ["all"]:
         install_all()
     else:
         for package_name in packages:
@@ -23,8 +23,9 @@ def run_install_command(packages: list[str]):
 
 def install_all():
     logs = read_logs()
-    packages = " ".join([f"{package['name']}=={package['version']}" for package in logs['packages']])
-    install_package(packages)
+    packages = [f"{package['name']}=={package['version']}" for package in logs['packages']]
+    for package in packages:
+        install_package(package)
 
 def install_defaults():
     packages = [
