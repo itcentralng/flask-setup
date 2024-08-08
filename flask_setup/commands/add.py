@@ -1,8 +1,8 @@
-import os
 import typer
 from shutil import copytree
 from flask_setup.methods import do_add_log
 
+LOG_TYPE = 'modules'
 
 def run_add_command(path, name, existing_blueprint, fields):
     model_field_types = {
@@ -15,7 +15,6 @@ def run_add_command(path, name, existing_blueprint, fields):
     model_fields = [f.lower() for f in fields]
     fields = [f.split(':')[0].lower() for f in fields]
     # check if a folder with the name exists
-    log = f'Blueprint {name} already exists'
     if not existing_blueprint:
         copytree(f'{path}/generators/blueprint', f'app/{name}', dirs_exist_ok=True)
         # rename sample blueprint to name
@@ -78,6 +77,20 @@ def run_add_command(path, name, existing_blueprint, fields):
                 content = content.replace("migrate = Migrate(app, db)", f"migrate = Migrate(app, db)\n\n\nfrom app.{name}.controller import bp as {name}_bp\napp.register_blueprint({name}_bp)\n")
             with open(f"app/__init__.py", "w") as main_app:
                 main_app.write(content)
-        log = f'Blueprint {name} added successfully'
-        do_add_log(log)
-    typer.echo(log)
+        do_post_add_logs(name, model_fields)
+        typer.echo(f'Blueprint {name} added successfully')
+    else:
+        typer.echo(f'Blueprint {name} already exists')
+
+def do_post_add_logs(name, fields):
+    log = {
+        "name":name,
+        "fields":[
+            {
+                "name":field.split(':')[0],
+                "type":field.split(':')[-1] if len(field.split(':')) > 1 else 'str'
+            }
+            for field in fields
+            ],
+        }
+    do_add_log(LOG_TYPE, log)

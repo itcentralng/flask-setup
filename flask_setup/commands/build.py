@@ -1,10 +1,14 @@
 import os
+from flask_setup.commands.add import do_post_add_logs
 import typer
 from flask_setup.commands.install import install_defaults, manage_dependencies
 from flask_setup.methods import do_add_log, write_config, write_log_file
 from shutil import copytree
 
 def run_build_command(project, name, email, path):
+    """
+    Build a new project from scratch
+    """
     if os.path.exists(project):
             typer.echo("Project already exists")
             return
@@ -34,9 +38,28 @@ def run_build_command(project, name, email, path):
 
     install_defaults()
 
+    default_module = {
+         "name":"user",
+         "fields":[
+              {
+                   "name":"username",
+                   "type":"str"
+              },
+              {
+                   "name":"password",
+                   "type":"str"
+              },
+         ]
+    }
+
+    do_post_add_logs(default_module['name'], default_module["fields"])
+
     typer.echo('Project built successfully')
 
 def run_init_command(project, name, email):
+    """
+    Initialize flask-setup in an existing project
+    """
 
     write_log_file(project, name, email)
 
