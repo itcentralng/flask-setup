@@ -10,14 +10,15 @@ from email.mime.multipart import MIMEMultipart
 
 
 @celery.task
-def send_mail(subject, text, html, recipients, attachments=[]):
+def send_mail(recipients, subject, text, html):
     sender = os.environ.get('MAIL_USERNAME')
+    sender_name = "Enter Sender Full Name"
     receiver = ",".join(recipients)
     password = os.environ.get('MAIL_PASSWORD')
     
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
-    message["From"] = f'Sender Full Name <{sender}>'
+    message["From"] = f'{sender_name} <{sender}>'
     message["To"] = receiver
 
     # Turn these into plain/html MIMEText objects
