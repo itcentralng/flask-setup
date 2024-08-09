@@ -1,43 +1,137 @@
+# Flask-Setup
+
+Flask-Setup is an open-source and user-friendly tool designed to help you set up a Flask project in under 10 minutes. With a single `fs` command, it takes care of all your CRUD operations (HTTP methods) such as post, get, put, and delete automatically.
+
+Imagine skipping the tedious setup process and diving straight into building your application's features. Flask-Setup does the heavy lifting, so you can focus on what truly matters rather than setting up boilerplate code.
+
+Explore more and see how Flask-Setup can streamline your Flask development at the [Flask-Setup PyPI page](https://pypi.org/project/flask-setup/).
+
 # Getting Started
 
-This project was created with [FLASK-SETUP](https://github.com/mrteey/flask-setup).
+If you have any questions that are beyond the scope of the documentation, Please feel free to [email us](nasir@mrteey.com).
 
-## Initial Setup
-Please follow the following steps to get started with this project.
-1. Create a .env file
-2. Create a virtual environment
-3. Activate the virtual environment
-4. Install the requirements
-5. Run migration upgrade
-6. Run the application
+## Installation
 
-## Content of your .env file:
-```DATABASE_URI=your-database-uri```
+Make sure [Python](https://www.python.org/downloads/) is installed on your system (Windows, Linux, macOS). Then, run the following command:
 
-## Create a virtual environment
-```python3 -m venv venv```
+```python
+pip install flask-setup
+```
 
-## Activate the virtual environment
-```source venv/bin/activate```
+## Upgrade
 
-## Install the requirements
-```pip install -r requirements.txt```
+To upgrade Flask-Setup to the latest version, run the following command:
 
-## Run migration upgrade
-```flask db upgrade```
+```python
+ pip install --upgrade flask-setup
+```
 
-## Run the application
-```./run```
+## Usage
 
-Some commands you can run with flask-setup:
-<br />
-```fs add blueprint_name```
-<br />
-```fs remove blueprint_name```
-<br />
-```fs copy blueprint_name_to_copy blueprint_name_to_paste```
-<br />
-```fs install library-name```
-<br />
-```fs uninstall library-name```
-<br />
+To use Flask-Setup, run the `fs` command followed by the desired argument (`fs command argument`) in the terminal. Here are the available commands:
+
+- build
+- init
+- add
+- remove
+- copy
+- install
+- uninstall
+- destroy
+- start
+
+The arguments can be a project name, blueprint name, and/or field names with their respective data types.
+
+## Commands
+
+### build
+
+This creates a new project with the specified name.
+
+```python
+fs build projectname
+```
+
+### init
+
+This initialises a `.fs` file in the root directory of an existing Flask project, enabling seamless use of Flask-Setup `fs` commands.
+
+```python
+fs init
+```
+
+### add
+
+This command adds a blueprint with the name 'api' and the specified model fields.
+
+```python
+fs add api ..fields
+```
+
+- Supported field types include `str` (optional), `int`, `float`, `bool`, and `date`.
+- Example usage:
+  - `fs add customer`
+  - `fs add news title:str date:date body views:int`
+
+In the second example, a blueprint named 'news' will be created with the specified model fields. Note that the `str` field type for `body` is optional and has been omitted.
+
+### remove
+
+This will remove the blueprint named 'api' from the project.
+
+```python
+fs remove api
+```
+
+### copy
+
+This will copy the blueprint named 'bp_to_copy' and rename it to 'bp_new_name'.
+
+```python
+fs bp_to_copy bp_new_name
+```
+
+### install
+
+This will install the specified module "flask" and freeze it to the requirements file.
+
+```python
+fs install flask
+```
+
+### uninstall
+
+This will uninstall the specified module "flask" and remove it from the freeze requirements file.
+
+```python
+fs uninstall flask
+```
+
+### destroy
+
+This will destroy the current project and all associated files. **Use with caution as this action is irreversible.**
+
+```python
+fs destroy
+```
+
+### start
+
+This will start the server.
+
+```python
+fs start
+```
+
+## Model Changes
+
+> [!Note]
+> To create database tables or apply model changes, perform the following database migration and upgrade steps:
+
+```python
+flask db migrate -m "migration message"
+```
+
+```python
+flask db upgrade
+```
