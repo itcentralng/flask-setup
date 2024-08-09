@@ -41,16 +41,10 @@ def run_build_command(project, name, email, path):
     default_module = {
          "name":"user",
          "fields":[
-              {
-                   "name":"username",
-                   "type":"str"
-              },
-              {
-                   "name":"password",
-                   "type":"str"
-              },
-         ]
-    }
+              "username:str",
+              "password:str"
+              ]
+        }
 
     do_post_add_logs(default_module['name'], default_module["fields"])
 
