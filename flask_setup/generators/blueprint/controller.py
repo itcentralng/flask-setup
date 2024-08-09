@@ -33,7 +33,7 @@ def update___blueprint__(id):
 
 @bp.patch('/__blueprint__/<int:id>')
 @auth_required()
-def update___blueprint__(id):
+def patch___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
     if __blueprint__ is None:
         return {'message': '__Blueprint__ not found'}, 404
@@ -52,6 +52,6 @@ def delete___blueprint__(id):
 
 @bp.get('/__blueprint__')
 @auth_required()
-def get___blueprint__():
+def get_all___blueprint__():
     __blueprint__s = __Blueprint__.get_all()
     return {'data':__Blueprint__Schema(many=True).dump(__blueprint__s), 'message': '__Blueprint__ fetched successfully', 'status':'success'}, 200
