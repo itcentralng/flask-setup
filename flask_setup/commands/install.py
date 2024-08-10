@@ -1,33 +1,32 @@
-import os
 import platform
 import subprocess
-from typing import List
-from flask_setup.methods import do_add_log, do_freeze, read_logs, write_config
+from typing import List, Optional
+from typing_extensions import Annotated
+from flask_setup.methods import do_add_log, read_logs, write_config
+from rich.progress import track
 
 LOG_TYPE = 'packages'
 
-PIP = 'venv/bin/pip' if os.name == 'posix' else 'venv\Scripts\pip'
-
-def run_install_command(packages: List[str]):
+def run_install_command(packages: Annotated[Optional[List[str]], None] = None, PIP='pip'):
     """
     Install packages
     """
-    if packages == ["all"]:
-        install_all()
+    if packages == ["all"] or packages == None:
+        install_all(PIP='pip')
     else:
-        for package_name in packages:
+        for package_name in track(packages, description="Installing packages..."):
             # Install the package
-            install_package(package_name)
+            install_package(package_name, PIP)
 
-            do_post_install_logs(package_name)
+            do_post_install_logs(package_name, PIP)
 
-def install_all():
+def install_all(PIP='pip'):
     logs = read_logs()
     packages = [f"{package['name']}=={package['version']}" for package in logs['packages']]
-    for package in packages:
-        install_package(package)
+    for package in track(packages, description="Installing packages..."):
+        install_package(package, PIP)
 
-def install_defaults():
+def install_defaults(PIP):
     packages = [
         "flask-setup==0.6.1",
         "Flask==3.0.3",
@@ -45,18 +44,19 @@ def install_defaults():
         "redis==5.0.8",
         "requests==2.32.3",
         ]
-    run_install_command(packages)
+    run_install_command(packages, PIP)
 
     set_configs()
 
-def install_package(package):
-    subprocess.run([PIP, 'install', package])
+def install_package(package, PIP='pip'):
+    subprocess.run([PIP, 'install', package], stdout=subprocess.PIPE, text=True)
 
-def show_package(package):
+def show_package(package, PIP='pip'):
     result = subprocess.run([PIP, 'show', package], stdout=subprocess.PIPE, text=True)
     # Get the installed package version
     output = result.stdout
     version = None
+    dependencies = []
     
     # Parse the output to find the version and dependencies
     for line in output.split('\n'):
@@ -70,15 +70,15 @@ def manage_dependencies():
     # Get the list of installed packages
     installed_packages = get_installed_packages()
 
-    # Print the list of packages
-    for package, _ in installed_packages:
+    for package, _ in track(installed_packages, description="Managing packages..."):
+    # for package, _ in installed_packages:
         do_post_install_logs(package)
     
     set_configs()
 
-def get_installed_packages():
+def get_installed_packages(PIP='pip'):
     # Run `pip list` command
-    result = subprocess.run(['pip', 'list', '--format=freeze'], stdout=subprocess.PIPE, text=True)
+    result = subprocess.run([PIP, 'list', '--format=freeze'], stdout=subprocess.PIPE, text=True)
     
     # Capture the output
     output = result.stdout
@@ -92,10 +92,10 @@ def get_installed_packages():
     
     return packages
 
-def do_post_install_logs(package_name):
+def do_post_install_logs(package_name, PIP='pip'):
     package_name = package_name.split('==')[0]
             
-    version, dependencies = show_package(package_name)
+    version, dependencies = show_package(package_name, PIP)
 
     log = {
         "name":package_name.split('==')[0],
@@ -109,9 +109,9 @@ def do_post_install_logs(package_name):
         }
     do_add_log(LOG_TYPE, log)
 
-def set_configs():
+def set_configs(PIP='pip'):
     python_version = platform.python_version()
-    pip_version, _ = show_package('pip')
-    fs_version, _ = show_package('flask-setup')
+    pip_version, _ = show_package('pip', PIP)
+    fs_version, _ = show_package('flask-setup', PIP)
 
     write_config(python_version, pip_version, fs_version)

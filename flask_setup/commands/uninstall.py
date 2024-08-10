@@ -1,11 +1,8 @@
-import os
 import subprocess
 import typer
 
 from flask_setup.commands.install import get_installed_packages
 from flask_setup.methods import read_logs, write_logs
-
-PIP = 'venv/bin/pip' if os.name == 'posix' else 'venv\Scripts\pip'
 
 def run_uninstall_command(package):
     if package == 'all':
@@ -20,7 +17,7 @@ def run_uninstall_command(package):
                 typer.echo(f'An error occurred: {e}')
     else:
         try:
-            result = subprocess.run([PIP, 'uninstall', '-y', package], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            result = subprocess.run(['pip', 'uninstall', '-y', package], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             do_post_uninstall_logs(package)
             if result.returncode == 0:
                 typer.echo(f'{package} successfully uninstalled')

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+from typing_extensions import Annotated
 from flask_setup.commands.add import run_add_command
 from flask_setup.commands.build import run_build_command, run_init_command
 from flask_setup.commands.install import run_install_command
@@ -10,34 +11,43 @@ from flask_setup.commands.uninstall import run_uninstall_command
 import typer
 from typing import List
 
-from flask_setup.decorators import before_command, new_project_command
-from flask_setup.methods import set_project
+from flask_setup.decorators import before_command
 
 app = typer.Typer()
 
 @app.command()
-@new_project_command
-def init():
+def init(
+    project: Annotated[str, typer.Argument(help="The name to give this project")] = None,
+    author_name: Annotated[str, typer.Argument(help="Your name to associate with this project")] = None,
+    author_email: Annotated[str, typer.Argument(help="Yout email to associate with this project")] = None,
+):
     """
     run `fs init` => This create a .fs file in the current directory
     """
-    project, author_name, author_email = set_project()
+    project = project or typer.prompt('Name of this project')
+    author_name = author_name or typer.prompt('Your name')
+    author_email = author_email or typer.prompt('Your email')
     run_init_command(project, author_name, author_email)
 
 @app.command()
-@new_project_command
-def build():
+def build(
+    project: Annotated[str, typer.Argument(help="The name to give this project")] = None,
+    author_name: Annotated[str, typer.Argument(help="Your name to associate with this project")] = None,
+    author_email: Annotated[str, typer.Argument(help="Yout email to associate with this project")] = None,
+):
     """
     run `fs build project` => This create a new directory `project` and build your app in it.
     """
     path = os.path.dirname(os.path.realpath(__file__))
-    project, author_name, author_email = set_project()
+    project = project or typer.prompt('Name of this project')
+    author_name = author_name or typer.prompt('Your name')
+    author_email = author_email or typer.prompt('Your email')
     return run_build_command(project, author_name, author_email, path)
     
 
 @app.command()
 @before_command
-def install(packages: List[str]):
+def install(packages: Annotated[List[str], typer.Argument(help="space separated packages or 'all' e.g. fs install 'flask arrow'")] = None):
     """
     run `fs install package` => This uses pip in the background to install `package`. Packages can be passed as space separated.
     """
