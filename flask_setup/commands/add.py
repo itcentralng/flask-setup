@@ -10,10 +10,14 @@ def run_add_command(path, name, existing_blueprint, fields):
         "int":"Integer",
         "date":"DateTime",
         "float":"Float",
-        "bool":"Boolean"
+        "bool":"Boolean",
+        "fk":"ForeignKey",
+        "rel":"relationship",
     }
-    model_fields = [f.lower() for f in fields]
-    fields = [f.split(':')[0].lower() for f in fields]
+    model_fields = [f.lower() for f in fields if not (f.split(':')[-1].startswith('fk') or f.split(':')[-1].startswith('rel'))]
+    fk_model_fields = [f.lower() for f in fields if f.split(':')[-1].startswith('fk')]
+    rel_model_fields = [f.lower() for f in fields if f.split(':')[-1].startswith('rel')]
+    fields = [f.split(':')[0].lower() for f in fields if not f.split(':')[-1].startswith('rel')]
     # check if a folder with the name exists
     if not existing_blueprint:
         copytree(f'{path}/generators/blueprint', f'app/{name}', dirs_exist_ok=True)
@@ -38,6 +42,14 @@ def run_add_command(path, name, existing_blueprint, fields):
         if fields:
             # INCLUDE fields IN MODEL
             model_extra_fields = "\n    ".join([f"{a.split(':')[0]} = db.Column(db.{model_field_types.get(a.split(':')[-1], 'String')})" for a in model_fields])
+            if fk_model_fields:
+                fk_fields = "\n    ".join([f"{a.split(':')[0]} = db.Column(db.Integer, db.ForeignKey('{a.split(':')[-1].split('=')[-1]}'))" for a in fk_model_fields])
+                model_extra_fields += "\n    "
+                model_extra_fields += fk_fields
+            if rel_model_fields:
+                rel_fields = "\n    ".join([f"{a.split(':')[0]} = db.relationship('{a.split(':')[-1].split('=')[-1].title()}')" for a in rel_model_fields])
+                model_extra_fields += "\n    "
+                model_extra_fields += rel_fields
             model_args = ", ".join(fields)
             model_kwargs = ", ".join([f"{a}={a}" for a in fields])
             model_optional_kwargs = ", ".join([f"{a}=None" for a in fields])
