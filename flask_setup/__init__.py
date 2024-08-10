@@ -55,9 +55,9 @@ def install(packages: Annotated[List[str], typer.Argument(help="space separated 
 
 @app.command()
 @before_command
-def uninstall(package: str):
+def uninstall(package: Annotated[str, typer.Argument(help="package or 'all' e.g. fs uninstall 'flask'")] = None):
     """
-    run `fs uninstall package` => This uses pip in the background to uninstall and freeze `package`.
+    run `fs uninstall package` => This uses pip in the background to uninstall.
     """
     return run_uninstall_command(package)
 
