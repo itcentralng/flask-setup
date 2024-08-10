@@ -58,9 +58,11 @@ def write_log_file(project, name, email):
 
 def write_config(python_version, pip_version, fs_version):
     config = {
+        "environment":"venv",
         "python":python_version,
         "pip":pip_version,
-        "fs":fs_version
+        "fs":fs_version,
+        "port":5000
         }
     
     logs = read_logs()

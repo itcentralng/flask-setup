@@ -9,7 +9,7 @@ from flask_jwt_extended import (
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, unique=True, nullable=True)
+    username = db.Column(db.String, unique=True, nullable=True)
     password = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
@@ -61,12 +61,12 @@ class User(db.Model):
         return cls.query.filter_by(id=id).first()
     
     @classmethod
-    def get_by_email(self, email):
-        return User.query.filter(User.email==email).first()
+    def get_by_username(self, username):
+        return User.query.filter(User.username==username).first()
     
     @classmethod
-    def create(cls, email, password, role):
-        user = cls(email=email, password=password, role=role)
+    def create(cls, username, password, role):
+        user = cls(username=username, password=password, role=role)
         user.hash_password()
         user.save()
         return user

@@ -30,20 +30,19 @@ def install_all():
 def install_defaults():
     packages = [
         "flask-setup==0.6.1",
-        "Flask-JWT-Extended==4.6.0",
-        "bcrypt==4.2.0",
         "Flask==3.0.3",
         "Flask-Cors==4.0.1",
-        "celery==5.4.0",
-        "marshmallow==3.21.3",
-        "marshmallow-sqlalchemy==1.0.0",
         "Flask-Migrate==4.0.7",
+        "flask-marshmallow==1.2.1",
+        "marshmallow-sqlalchemy==1.0.0",
         "Flask-SQLAlchemy==3.1.1",
+        "bcrypt==4.2.0",
+        "Flask-JWT-Extended==4.6.0",
+        "celery==5.4.0",
         "gunicorn==22.0.0",
         "psycopg2-binary==2.9.9",
         "python-dotenv==1.0.1",
         "redis==5.0.8",
-        "boto3==1.34.151",
         "requests==2.32.3",
         ]
     run_install_command(packages)

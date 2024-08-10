@@ -2,7 +2,6 @@
 import os
 from flask_setup.commands.add import run_add_command
 from flask_setup.commands.build import run_build_command, run_init_command
-from flask_setup.commands.copy import run_copy_command
 from flask_setup.commands.install import run_install_command
 from flask_setup.commands.remove import run_remove_command
 from flask_setup.commands.start import run_start_command
@@ -12,7 +11,7 @@ import typer
 from typing import List
 
 from flask_setup.decorators import before_command, new_project_command
-from flask_setup.methods import do_add_log, set_project
+from flask_setup.methods import set_project
 
 app = typer.Typer()
 
@@ -75,18 +74,6 @@ def remove(name: str):
     name = name.lower()
     existing_blueprint = os.path.isdir(f'app/{name}')
     return run_remove_command(name, existing_blueprint)
-
-@app.command()
-@before_command
-def copy(blueprint_to_copy: str, new_blueprint_name: str):
-    """
-    run `fs copy existing new` => The copy command copies a blueprint from the project:
-        it requires the name of the blueprint to be copied and the new name of the blueprint
-    """
-    blueprint_to_copy = blueprint_to_copy.lower()
-    new_blueprint_name = new_blueprint_name.lower()
-    existing_blueprint = os.path.isdir(f'app/{blueprint_to_copy}')
-    return run_copy_command(blueprint_to_copy, new_blueprint_name, existing_blueprint)
 
 @app.command()
 @before_command

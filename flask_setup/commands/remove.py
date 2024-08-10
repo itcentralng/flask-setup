@@ -1,14 +1,15 @@
 import os
 import typer
 
-from flask_setup.methods import do_add_log
+from flask_setup.methods import read_logs, write_logs
 
 def run_remove_command(name, existing_blueprint):
+    """
+    Remove existing module(blueprint) from the project
+    """
     # check if a folder with the name exists
-    log = f'Blueprint {name} does not exist'
     if existing_blueprint:
-        log = ''
-        typer.echo("Are you sure you want to remove this blueprint?")
+        typer.echo(f"Are you sure you want to remove this blueprint ({name})?")
         if typer.confirm('y/n'):
                 # remove the blueprint
             os.system(f'rm -rf app/{name}')
@@ -19,6 +20,15 @@ def run_remove_command(name, existing_blueprint):
                 content = content.replace(f"\napp.register_blueprint({name}_bp)", "")
             with open("app/__init__.py", "w") as main_app:
                 main_app.write(content)
-            log = f'Blueprint {name} removed successfully'
-            do_add_log(log)
-    typer.echo(log)
+            do_post_remove_logs(name)
+            typer.echo(f'Blueprint {name} removed successfully')
+    else:
+        typer.echo(f'Blueprint {name} does not exist')
+
+def do_post_remove_logs(module):
+    logs = read_logs()
+    for index, item in enumerate(logs['modules']):
+        if item['name'].lower() == module.lower():
+            logs['modules'].pop(index)
+            write_logs(logs)
+            break

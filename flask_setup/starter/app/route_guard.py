@@ -23,11 +23,3 @@ def auth_required(*roles_required):
             return f(*args, **kwargs)
         return decorated
     return requires_auth
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        verify_jwt_in_request()
-        g.user = User.get_by_id(get_jwt_identity())
-        return f(*args, **kwargs)
-    return decorated
