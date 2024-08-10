@@ -89,7 +89,7 @@ def run_add_command(path, name, existing_blueprint, fields):
                 content = content.replace("migrate = Migrate(app, db)", f"migrate = Migrate(app, db)\n\n\nfrom app.{name}.controller import bp as {name}_bp\napp.register_blueprint({name}_bp)\n")
             with open(f"app/__init__.py", "w") as main_app:
                 main_app.write(content)
-        do_post_add_logs(name, model_fields)
+        do_post_add_logs(name, model_fields+fk_model_fields+rel_model_fields)
         typer.echo(f'Blueprint {name} added successfully')
     else:
         typer.echo(f'Blueprint {name} already exists')
