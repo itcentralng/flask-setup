@@ -3,7 +3,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
     setup(
      name='flask_setup',  
-     version='0.6.1',
+     version='0.7',
      scripts=['fs'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",
@@ -39,9 +39,9 @@ with open("README.md", "r") as fh:
          
          'flask_setup/starter/Dockerfile',
          'flask_setup/starter/supervisord.conf',
-         'flask_setup/starter/requirements.txt',
          'flask_setup/starter/run',
          'flask_setup/starter/.env',
+         'flask_setup/starter/README.md',
 
          ]),
       ('generators', [

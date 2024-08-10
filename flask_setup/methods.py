@@ -2,15 +2,6 @@ import datetime
 import subprocess
 import json
 
-def do_freeze():
-    #send a pip freeze command to shell and hold returned value
-    req = subprocess.check_output(["pip", "freeze"])
-    with open("requirements.txt", "w") as _app:
-        req = req.decode("utf-8") #convert returned byte value to string
-        _app.write(req)
-    return True
-
-
 def do_add_log(type, data):
     # create a datetime string
     now = datetime.datetime.now()
@@ -70,17 +61,3 @@ def write_config(python_version, pip_version, fs_version):
     logs['config'] = config
 
     write_logs(logs)
-
-def set_project():
-    project, author_name, author_email = None, None, None
-
-    while not project:
-        project = input("Enter name of project:\n")
-    
-    while not author_name:
-        author_name = input("Enter your name:\n")
-    
-    while not author_email:
-        author_email = input("Enter your email:\n")
-
-    return project, author_name, author_email

@@ -1,8 +1,9 @@
 import os
+import subprocess
 from flask_setup.commands.add import do_post_add_logs
 import typer
 from flask_setup.commands.install import install_defaults, manage_dependencies
-from flask_setup.methods import do_add_log, write_config, write_log_file
+from flask_setup.methods import write_log_file
 from shutil import copytree
 
 def run_build_command(project, name, email, path):
@@ -31,12 +32,14 @@ def run_build_command(project, name, email, path):
     # create virtual environment
     os.system('python3 -m venv venv') if os.name == 'posix' else os.system('py -m venv venv')
 
+    PIP = "venv/bin/pip" if os.name == 'posix' else  "venv\\Scripts\\pip"
+
     # upgrade pip
-    os.system('venv/bin/pip install --upgrade pip') if os.name == 'posix' else os.system('venv\\Scripts\\pip install --upgrade pip')
+    subprocess.run([PIP, 'install', '--upgrade', 'pip'], stdout=subprocess.PIPE, text=True)
 
     write_log_file(project, name, email)
 
-    install_defaults()
+    install_defaults(PIP)
 
     default_module = {
          "name":"user",
