@@ -34,10 +34,8 @@ To use Flask-Setup, run the `fs` command followed by the desired argument (`fs c
 - init
 - add
 - remove
-- copy
 - install
 - uninstall
-- destroy
 - start
 
 The arguments can be a project name, blueprint name, and/or field names with their respective data types.
@@ -68,10 +66,12 @@ This command adds a blueprint with the name 'api' and the specified model fields
 fs add api ..fields
 ```
 
-- Supported field types include `str` (optional), `int`, `float`, `bool`, and `date`.
+- Supported field types include `str` (optional), `int`, `float`, `bool`, `date`, `fk`, `rel`.
 - Example usage:
-  - `fs add customer`
-  - `fs add news title:str date:date body views:int`
+  - `fs add category name:str news:rel=news`
+  - `fs add news title:str date:date body views:int category_id:fk=category.id`
+
+In the first example, a blueprint named 'category' will be created with the a `str` field 'name' and a relationship with the model 'news'.
 
 In the second example, a blueprint named 'news' will be created with the specified model fields. Note that the `str` field type for `body` is optional and has been omitted.
 
@@ -81,14 +81,6 @@ This will remove the blueprint named 'api' from the project.
 
 ```python
 fs remove api
-```
-
-### copy
-
-This will copy the blueprint named 'bp_to_copy' and rename it to 'bp_new_name'.
-
-```python
-fs bp_to_copy bp_new_name
 ```
 
 ### install
@@ -105,14 +97,6 @@ This will uninstall the specified module "flask" and remove it from the freeze r
 
 ```python
 fs uninstall flask
-```
-
-### destroy
-
-This will destroy the current project and all associated files. **Use with caution as this action is irreversible.**
-
-```python
-fs destroy
 ```
 
 ### start
