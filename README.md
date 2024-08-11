@@ -8,7 +8,7 @@ Explore more and see how Flask-Setup can streamline your Flask development at th
 
 # Getting Started
 
-If you have any questions that are beyond the scope of the documentation, Please feel free to [email us](nasir@mrteey.com).
+If you have any questions that are beyond the scope of the documentation, Please feel free to [email us](mailto:nasir@mrteey.com).
 
 ## Installation
 
