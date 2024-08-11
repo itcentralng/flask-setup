@@ -13,7 +13,7 @@ from typing import List
 
 from flask_setup.decorators import before_command
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_show_locals=False)
 
 @app.command()
 def init(
