@@ -8,7 +8,7 @@ Explore more and see how Flask-Setup can streamline your Flask development at th
 
 # Getting Started
 
-If you have any questions that are beyond the scope of the documentation, Please feel free to [email us](nasir@mrteey.com).
+If you have any questions that are beyond the scope of the documentation, Please feel free to [email us](mailto:nasir@mrteey.com).
 
 ## Installation
 
@@ -56,6 +56,14 @@ This initialises a `.fs` file in the root directory of an existing Flask project
 
 ```python
 fs init
+```
+
+### migrate
+
+This migrates older version of a flask-setup project (v0.6.1 and below) to the latest version.
+
+```python
+fs migrate
 ```
 
 ### add

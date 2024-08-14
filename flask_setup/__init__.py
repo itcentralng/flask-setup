@@ -2,7 +2,7 @@
 import os
 from typing_extensions import Annotated
 from flask_setup.commands.add import run_add_command
-from flask_setup.commands.build import run_build_command, run_init_command
+from flask_setup.commands.build import run_build_command, run_init_command, run_migrate_command
 from flask_setup.commands.install import run_install_command
 from flask_setup.commands.remove import run_remove_command
 from flask_setup.commands.start import run_start_command
@@ -28,6 +28,13 @@ def init(
     author_name = author_name or typer.prompt('Your name')
     author_email = author_email or typer.prompt('Your email')
     run_init_command(project, author_name, author_email)
+
+@app.command()
+def migrate():
+    """
+    run `fs migrate` => This migrates an older version of an fs project to the latest.
+    """
+    run_migrate_command()
 
 @app.command()
 def build(

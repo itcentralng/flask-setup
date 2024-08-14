@@ -58,6 +58,14 @@ This initialises a `.fs` file in the root directory of an existing Flask project
 fs init
 ```
 
+### migrate
+
+This migrates older version of a flask-setup project (v0.6.1 and below) to the latest version.
+
+```python
+fs migrate
+```
+
 ### add
 
 This command adds a blueprint with the name 'api' and the specified model fields.

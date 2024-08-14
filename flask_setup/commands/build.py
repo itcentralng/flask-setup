@@ -3,7 +3,7 @@ import subprocess
 from flask_setup.commands.add import do_post_add_logs
 import typer
 from flask_setup.commands.install import install_defaults, manage_dependencies
-from flask_setup.methods import write_log_file
+from flask_setup.methods import manage_modules, project_is_v6_down, write_log_file
 from shutil import copytree
 from rich.progress import track
 
@@ -67,3 +67,20 @@ def run_init_command(project, name, email):
     manage_dependencies()
 
     typer.echo('fs initialized successfully')
+
+def run_migrate_command():
+    """
+    Migrate an older flask-setup project to latest version
+    """
+
+    if project_is_v6_down():
+        project = project or typer.prompt('Name of this project')
+        author_name = author_name or typer.prompt('Your name')
+        author_email = author_email or typer.prompt('Your email')
+        write_log_file(project, author_name, author_email)
+
+    manage_dependencies()
+
+    manage_modules()
+
+    typer.echo('Project migrated successfully')
