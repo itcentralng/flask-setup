@@ -11,7 +11,8 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade flask-setup
+RUN fs install all
 
 COPY . .
 
