@@ -74,9 +74,9 @@ def run_migrate_command():
     """
 
     if project_is_v6_down():
-        project = project or typer.prompt('Name of this project')
-        author_name = author_name or typer.prompt('Your name')
-        author_email = author_email or typer.prompt('Your email')
+        project = typer.prompt('Name of this project')
+        author_name = typer.prompt('Your name')
+        author_email = typer.prompt('Your email')
         write_log_file(project, author_name, author_email)
 
     manage_dependencies()
