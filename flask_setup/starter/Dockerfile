@@ -9,7 +9,7 @@ RUN cd app
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY .fs .
 
 RUN pip install --upgrade flask-setup
 RUN fs install
