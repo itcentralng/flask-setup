@@ -27,8 +27,9 @@ def install_all(PIP='pip'):
         install_package(package, PIP)
 
 def install_defaults(PIP):
+    fs_version, _ = show_package('flask-setup', PIP)
     packages = [
-        "flask-setup==0.7",
+        f"flask-setup=={fs_version}",
         "Flask==3.0.3",
         "Flask-Cors==4.0.1",
         "Flask-Migrate==4.0.7",
