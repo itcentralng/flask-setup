@@ -11,6 +11,7 @@ WORKDIR /app
 
 COPY .fs .
 
+RUN pip install --upgrade pip
 RUN pip install --upgrade flask-setup
 RUN fs install
 
