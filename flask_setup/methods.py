@@ -55,7 +55,8 @@ def write_config(python_version, pip_version, fs_version):
         "python":python_version,
         "pip":pip_version,
         "fs":fs_version,
-        "port":5000
+        "port":5000,
+        "entry-point":"main.py"
         }
     
     logs = read_logs()

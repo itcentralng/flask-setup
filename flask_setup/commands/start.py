@@ -8,4 +8,5 @@ def run_start_command():
     Start the project
     """
     port = read_logs()['config']['port']
-    os.system('flask --app main --debug run -p ' + str(port))
+    entry = read_logs()['config']['entry-point']
+    os.system(f'flask --app {entry} --debug run -p ' + str(port))
