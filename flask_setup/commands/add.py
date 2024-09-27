@@ -63,6 +63,11 @@ def run_add_command(path, name, existing_blueprint, fields):
         with open(f'app/{name}/schema.py', 'r') as f:
             content = f.read()
         content = content.replace('__blueprint__', name).replace('__Blueprint__', name.title())
+        if fields and rel_model_fields:
+            rel_fields = "\n    ".join([f"{a.split(':')[0]} = ma.Nested('{a.split(':')[-1].split('=')[-1].title()}Schema', many=True)" for a in rel_model_fields])
+            content = content.replace('__relationships__', rel_fields)
+        else:
+            content = content.replace('__relationships__', "")
         with open(f'app/{name}/schema.py', 'w') as f:
             f.write(content)
         # register the blueprint to the app

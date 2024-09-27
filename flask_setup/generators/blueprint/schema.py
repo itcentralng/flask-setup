@@ -5,3 +5,4 @@ class __Blueprint__Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = __Blueprint__
         exclude = ('is_deleted',)
+    __relationships__
