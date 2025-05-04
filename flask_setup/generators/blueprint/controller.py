@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from app.route_guard import auth_required
+from helpers.model import paginate
 
 from app.__blueprint__.model import *
 from app.__blueprint__.schema import *
@@ -53,5 +54,15 @@ def delete___blueprint__(id):
 @bp.get('/__blueprint__')
 @auth_required()
 def get_all___blueprint__():
-    __blueprint__s = __Blueprint__.get_all()
-    return {'data':__Blueprint__Schema(many=True).dump(__blueprint__s), 'message': '__Blueprint__ fetched successfully', 'status':'success'}, 200
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    
+    query = __Blueprint__.get_all()
+    items, pagination = paginate(query, page=page, per_page=per_page)
+    
+    return {
+        'data': __Blueprint__Schema(many=True).dump(items), 
+        'pagination': pagination,
+        'message': '__Blueprint__ fetched successfully', 
+        'status': 'success'
+    }, 200

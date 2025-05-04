@@ -28,7 +28,7 @@ class __Blueprint__(db.Model):
     
     @classmethod
     def get_all(cls):
-        return cls.query.filter_by(is_deleted=False).all()
+        return cls.query.filter_by(is_deleted=False)
     
     @classmethod
     def create(cls, __args__):

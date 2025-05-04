@@ -9,6 +9,10 @@ class __model__(db.Model):
     def get_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
     
+    @classmethod
+    def get_all(cls):
+        return cls.query
+    
     def save(self):
         try:
             db.session.add(self)

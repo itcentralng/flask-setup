@@ -1,5 +1,6 @@
 from flask import Blueprint, g, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.helpers.model import paginate
 
 from app.user.model import User
 from app.user.schema import UserSchema
@@ -53,3 +54,19 @@ def refresh():
     # generate token
     access_token = user.generate_refreshed_access_token()
     return {"status": "success", "message": "Request processed succesfully", 'access_token': access_token}, 200
+
+@bp.get('/users')
+@auth_required()
+def get_all_users():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    
+    query = User.get_all()
+    items, pagination = paginate(query, page=page, per_page=per_page)
+    
+    return {
+        'data': UserSchema(many=True).dump(items), 
+        'pagination': pagination,
+        'message': 'Users fetched successfully', 
+        'status': 'success'
+    }, 200
