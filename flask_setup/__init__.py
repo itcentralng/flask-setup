@@ -9,11 +9,33 @@ from flask_setup.commands.start import run_start_command
 from flask_setup.commands.uninstall import run_uninstall_command
 
 import typer
+from rich import print as rich_print
+from rich.panel import Panel
+from rich.text import Text
 from typing import List
 
 from flask_setup.decorators import before_command
 
-app = typer.Typer(pretty_exceptions_show_locals=False)
+app = typer.Typer(
+    pretty_exceptions_show_locals=False,
+    help="Flask-Setup CLI - A tool to quickly scaffold and manage Flask applications",
+    add_completion=False,
+)
+
+def display_welcome():
+    """Display welcome message and basic usage information"""
+    title = Text("Welcome to Flask-Setup!", style="bold green")
+    msg = Text.assemble(
+        ("Quick Start:\n", "bold yellow"),
+        ("1. Create new project:   ", "dim"), ("fs build myproject\n", "bold cyan"),
+        ("2. Add a new module:     ", "dim"), ("fs add users name:str email:str\n", "bold cyan"),
+        ("3. Start the server:     ", "dim"), ("fs start\n\n", "bold cyan"),
+        ("Type ", "dim"), ("fs --help", "bold cyan"), (" to see all commands\n", "dim"),
+        ("Visit ", "dim"), ("https://github.com/mrteey/flask-setup", "bold blue underline"), (" for documentation", "dim"),
+    )
+    
+    panel = Panel(msg, title=title, border_style="green")
+    rich_print(panel)
 
 @app.command()
 def init(
@@ -111,4 +133,11 @@ def start():
 
 
 def run():
+    """Entry point for the CLI"""
+    # If no arguments provided, show welcome message
+    import sys
+    if len(sys.argv) == 1:
+        display_welcome()
+        return
+    
     app()
