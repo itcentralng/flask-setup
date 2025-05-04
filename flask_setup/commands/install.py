@@ -58,7 +58,7 @@ def install_defaults(PIP):
             "Flask==3.0.3",
             "Flask-Cors==4.0.1",
             "Flask-Migrate==4.0.7",
-            "flask-marshmallow-1.3.0",
+            "flask-marshmallow==1.3.0",
             "marshmallow-sqlalchemy==1.0.0",
             "Flask-SQLAlchemy==3.1.1",
             "bcrypt==4.2.0",
