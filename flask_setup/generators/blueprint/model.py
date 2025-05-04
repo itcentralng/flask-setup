@@ -1,3 +1,4 @@
+import uuid
 from app import db
 
 class __Blueprint__(db.Model):

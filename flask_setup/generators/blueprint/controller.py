@@ -13,7 +13,7 @@ def create___blueprint__():
     __blueprint__ = __Blueprint__.create(__args__)
     return {'data':__Blueprint__Schema().dump(__blueprint__), 'message': '__Blueprint__ created successfully', 'status':'success'}, 201
 
-@bp.get('/__blueprint__/<int:id>')
+@bp.get('/__blueprint__/<id>')
 @auth_required()
 def get___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
@@ -21,7 +21,7 @@ def get___blueprint__(id):
         return {'message': '__Blueprint__ not found'}, 404
     return {'data':__Blueprint__Schema().dump(__blueprint__), 'message': '__Blueprint__ fetched successfully', 'status':'success'}, 200
 
-@bp.put('/__blueprint__/<int:id>')
+@bp.put('/__blueprint__/<id>')
 @auth_required()
 def update___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
@@ -31,7 +31,7 @@ def update___blueprint__(id):
     __blueprint__.update(__args__)
     return {'data':__Blueprint__Schema().dump(__blueprint__), 'message': '__Blueprint__ updated successfully', 'status':'success'}, 200
 
-@bp.patch('/__blueprint__/<int:id>')
+@bp.patch('/__blueprint__/<id>')
 @auth_required()
 def patch___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
@@ -41,7 +41,7 @@ def patch___blueprint__(id):
     __blueprint__.update(__args__)
     return {'data':__Blueprint__Schema().dump(__blueprint__), 'message': '__Blueprint__ updated successfully', 'status':'success'}, 200
 
-@bp.delete('/__blueprint__/<int:id>')
+@bp.delete('/__blueprint__/<id>')
 @auth_required()
 def delete___blueprint__(id):
     __blueprint__ = __Blueprint__.get_by_id(id)
