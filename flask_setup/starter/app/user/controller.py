@@ -1,6 +1,6 @@
 from flask import Blueprint, g, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.helpers.model import paginate
+from helpers.model import paginate
 
 from app.user.model import User
 from app.user.schema import UserSchema
