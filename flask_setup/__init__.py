@@ -3,7 +3,7 @@ import os
 from typing_extensions import Annotated
 from flask_setup.commands.add import run_add_command
 from flask_setup.commands.build import run_build_command, run_init_command, run_migrate_command
-from flask_setup.commands.install import run_install_command
+from flask_setup.commands.install import run_install_command, run_upgrade_command
 from flask_setup.commands.remove import run_remove_command
 from flask_setup.commands.start import run_start_command
 from flask_setup.commands.uninstall import run_uninstall_command
@@ -67,6 +67,14 @@ def uninstall(package: Annotated[str, typer.Argument(help="package or 'all' e.g.
     run `fs uninstall package` => This uses pip in the background to uninstall.
     """
     return run_uninstall_command(package)
+
+@app.command()
+@before_command
+def upgrade(packages: Annotated[List[str], typer.Argument(help="space separated packages or 'all' e.g. fs upgrade 'flask arrow'")] = None):
+    """
+    run `fs upgrade package` => This upgrades packages to their latest version using pip. You can pass 'all' to upgrade all packages.
+    """
+    return run_upgrade_command(packages)
 
 @app.command()
 @before_command

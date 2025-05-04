@@ -3,7 +3,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
     setup(
      name='flask_setup',  
-     version='0.7.6',
+     version='0.7.7',
      scripts=['fs'] ,
      author="Nasir Mustapha",
      author_email="nasir@mrteey.com",

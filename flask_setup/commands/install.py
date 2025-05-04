@@ -242,3 +242,62 @@ def set_configs(PIP='pip'):
         rich_print(f"[yellow]Warning: Could not determine flask-setup version.[/yellow]")
 
     write_config(python_version, pip_version, fs_version)
+
+def upgrade_package(package, PIP='pip'):
+    """
+    Upgrade a package to the latest version.
+    
+    Args:
+        package: The package name to upgrade
+        PIP: The pip command to use
+        
+    Returns:
+        Tuple[bool, str]: (success, message)
+    """
+    try:
+        # Run pip install --upgrade with capture_output
+        process = subprocess.run(
+            [PIP, 'install', '--upgrade', package],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False
+        )
+        
+        # Check if upgrade was successful
+        if process.returncode == 0:
+            return True, f"Successfully upgraded {package}"
+        else:
+            # Check for common errors
+            if "No matching distribution found" in process.stderr:
+                rich_print(f"[red]Error: Package '{package}' not found. Check the package name.[/red]")
+            elif "Could not find a version that satisfies the requirement" in process.stderr:
+                rich_print(f"[red]Error: No compatible version found for '{package}'.[/red]")
+            else:
+                rich_print(f"[red]Error upgrading '{package}': {process.stderr}[/red]")
+            
+            return False, process.stderr
+    except Exception as e:
+        rich_print(f"[red]Error: {str(e)}[/red]")
+        return False, str(e)
+
+def run_upgrade_command(packages: Annotated[Optional[List[str]], None] = None, PIP='pip'):
+    """
+    Upgrade packages to their latest versions
+    """
+    if packages == ["all"] or packages == None:
+        # Get all installed packages and upgrade them
+        installed_packages = get_installed_packages(PIP)
+        packages = [package for package, _ in installed_packages]
+    
+    for package_name in track(packages, description="Upgrading packages..."):
+        success, message = upgrade_package(package_name, PIP)
+        
+        if success:
+            rich_print(f"[green]Successfully upgraded {package_name}[/green]")
+            try:
+                do_post_install_logs(package_name, PIP)
+            except Exception as e:
+                rich_print(f"[yellow]Warning: Could not log package information for {package_name}. Error: {e}[/yellow]")
+        else:
+            rich_print(f"[red]Failed to upgrade {package_name}[/red]")
