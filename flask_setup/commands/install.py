@@ -3,7 +3,7 @@ import subprocess
 import sys
 from typing import List, Optional, Tuple
 from typing_extensions import Annotated
-from flask_setup.methods import do_add_log, read_logs, write_config
+from flask_setup.methods import do_add_log, read_logs, write_config, write_logs
 from rich.progress import track
 from rich import print as rich_print
 
@@ -29,8 +29,8 @@ def run_install_command(packages: Annotated[Optional[List[str]], None] = None, P
             if success:
                 rich_print(f"[green]Successfully installed {package_name}[/green]")
                 try:
-                    # package_name could be without version, do_post_install_logs will get the version
-                    do_post_install_logs(package_name, PIP)
+                    # package_name could be without version, update_package_logs will get the version
+                    update_package_logs(package_name, PIP)
                 except Exception as e:
                     rich_print(f"[yellow]Warning: Could not log package information for {package_name}. Error: {e}[/yellow]")
             else:
@@ -44,7 +44,7 @@ def install_all(PIP='pip'):
         if success:
             rich_print(f"[green]Successfully installed {package}[/green]")
             try:
-                do_post_install_logs(package.split('==')[0], PIP)
+                update_package_logs(package.split('==')[0], PIP)
             except Exception as e:
                 rich_print(f"[yellow]Warning: Could not log package information for {package}. Error: {e}[/yellow]")
         else:
@@ -78,7 +78,7 @@ def install_defaults(PIP):
             if success:
                 rich_print(f"[green]Successfully installed {package}[/green]")
                 try:
-                    do_post_install_logs(package.split('==')[0], PIP)
+                    update_package_logs(package.split('==')[0], PIP)
                 except Exception as e:
                     rich_print(f"[yellow]Warning: Could not log package information for {package}. Error: {e}[/yellow]")
             else:
@@ -171,7 +171,7 @@ def manage_dependencies():
 
     for package, _ in track(installed_packages, description="Managing packages..."):
     # for package, _ in installed_packages:
-        do_post_install_logs(package)
+        update_package_logs(package)
     
     set_configs()
 
@@ -191,7 +191,12 @@ def get_installed_packages(PIP='pip'):
     
     return packages
 
-def do_post_install_logs(package_name, PIP='pip'):
+def update_package_logs(package_name, PIP='pip'):
+    """
+    Update package logs in .fs file
+    
+    If the package exists, update its information; otherwise, add it as a new entry.
+    """
     package_name = package_name.split('==')[0]
             
     version, dependencies = show_package(package_name, PIP)
@@ -219,13 +224,32 @@ def do_post_install_logs(package_name, PIP='pip'):
                     "name": dep_name
                 })
     
+    # Create the log entry
     log = {
         "name": package_name,
         "version": version,
         "dependencies": dependency_info
     }
     
-    do_add_log(LOG_TYPE, log)
+    # Check if the package already exists in the logs
+    logs = read_logs()
+    package_exists = False
+    
+    for i, existing_package in enumerate(logs['packages']):
+        if existing_package['name'].lower() == package_name.lower():
+            # Package exists, update it instead of adding a new entry
+            logs['packages'][i] = log
+            package_exists = True
+            rich_print(f"[blue]Updated existing package: {package_name}=={version}[/blue]")
+            break
+    
+    # If package doesn't exist, add it as a new entry
+    if not package_exists:
+        logs['packages'].append(log)
+        rich_print(f"[green]Added new package: {package_name}=={version}[/green]")
+    
+    # Write the updated logs
+    write_logs(logs)
 
 def set_configs(PIP='pip'):
     python_version = platform.python_version()
@@ -296,7 +320,7 @@ def run_upgrade_command(packages: Annotated[Optional[List[str]], None] = None, P
         if success:
             rich_print(f"[green]Successfully upgraded {package_name}[/green]")
             try:
-                do_post_install_logs(package_name, PIP)
+                update_package_logs(package_name, PIP)
             except Exception as e:
                 rich_print(f"[yellow]Warning: Could not log package information for {package_name}. Error: {e}[/yellow]")
         else:
